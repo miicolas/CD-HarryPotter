@@ -322,14 +322,15 @@ function buttonFriends() {
 
 function cardInfo (){
   const card = document.querySelectorAll(".card_button_readmore");
-  console.log(card);
+  
   if (!card) return;
   card.forEach((card) => {
     card.addEventListener("click", function () {
       const cardId = card.closest(".card").getAttribute("data-id");
-      console.log(cardId);
+      console.log(cardId, "cardId appjs")
       // renvoie sur la page de la carte
-      window.location.href = `/cards/${cardId}`;
+      window.location.href = `/cardinfo.html?card=${cardId}`;
+
     });
   });
 

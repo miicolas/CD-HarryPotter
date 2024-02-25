@@ -1,21 +1,26 @@
-fetch("/cards/:id")
+// recupere l'id de la carte dans l'url http://localhost:3000/cardinfo.html?card=albusdumbledore
+const urlParams = new URLSearchParams(window.location.search); // Récupère les paramètres de l'URL
+const cardId = urlParams.get("card"); // Récupère la valeur du paramètre "card"
+console.log(cardId);
+
+
+fetch("/searchcard?card=" + cardId)
+
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
-    let gallery = document.querySelector(".container_card_info");
+    let gallery = document.querySelector(".card_container");
 
- 
+
       gallery.innerHTML += `
-      <div class="card" data-house="${data.house}" data-id="${data.id_card}">
-      <img
-          class="card_image"
-          src="../../img/cartes/${data.id_card}.jpg"
-          alt="${data.name}"
-      />
-  </div>
+          <div> 
+            <p>Hello</p>
+            <p>${data.name}</p>
+          </div>
         `;
     
-    })
+            
+  })
   .catch((error) => {
     console.error("Error fetching data:", error);
   });
