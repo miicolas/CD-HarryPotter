@@ -16,6 +16,8 @@ fetch("/searchcard?card=" + cardId)
           <div> 
             <p>Hello</p>
             <p>${data.name}</p>
+            <p>${data.house}</p>
+            <img src="../../img/cartes/${data.id_card}.jpg" alt="${data.name}">
           </div>
         `;
     
