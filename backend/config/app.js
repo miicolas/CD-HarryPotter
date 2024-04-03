@@ -2,14 +2,10 @@
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-import authRoute from "../routes/auth.js";
-import profilRoute from "../routes/profil.js";
-import cardRoute from "../routes/card.js";
-import drawRoute from "../routes/draw.js";
-import changeInfosRoute from "../routes/changeInfos.js"
-import protectedRoutes from "../routes/protectedRoutes.js"
-import friendsRoute from "../routes/friends.js"
+
 import { fileURLToPath } from "url";
+
+import router from '../router.js';
 
 
 
@@ -24,20 +20,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 
+
 app.use(express.static(path.join(__dirname, "../../frontend"))); // Permet de servir les fichiers statiques du dossier frontend
 // Exemple d'utilisation du middleware pour bloquer l'accès à une rout
 
 
-// Use routes
-app.use("/", authRoute);
-app.use("/", profilRoute);
-app.use("/", cardRoute);
-app.use("/", drawRoute);
-app.use("/", changeInfosRoute);
-app.use("/", friendsRoute);
+app.use(router);
 
-// Protected routes
-app.use("/", protectedRoutes)
 
 // Start the server
 app.listen(port, () => console.log(`Listening on port ${port}`));
