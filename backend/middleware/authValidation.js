@@ -1,15 +1,22 @@
 // middleware/authValidation.js
-import { query } from "../config/queries.js";
 import { hashPassword } from "../lib/utils.js";
+
+import {PrismaClient} from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 
 export async function validateLogin(req, res, next) {
   try {
     const { email_login, password_login } = req.body; // Récupère les données de l'utilisateur depuis le corps de la requête
 
-    const result = await query("SELECT * FROM Users WHERE email = ?", [
-      // Vérifie si l'email existe dans la base de données
-      email_login,
-    ]);
+    const result = await prisma.user.findMany({
+      where: {
+        email: email_login
+      }
+    });
+
+    console.log(result);
 
     if (result.length === 0) {
       // Si l'email n'existe pas dans la base de données

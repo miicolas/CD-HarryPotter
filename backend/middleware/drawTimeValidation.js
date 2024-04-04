@@ -1,10 +1,21 @@
 // controllers/drawController.js
-import { query } from "../config/queries.js";
+import {PrismaClient} from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export default async function drawTime(req, res, next) {
   try {
     const userId = req.user.id;
-    const lastDrawTime = await query( "SELECT lastDraw FROM Users WHERE id = ?", [userId]);
+
+    const lastDrawTime = await prisma.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        lastDraw: true
+      }
+
+    });
     const currentTime = Date.now(); // Heure actuelle en millisecondes
     // console.log(lastDrawTime);
 
@@ -27,7 +38,15 @@ export default async function drawTime(req, res, next) {
       }
     } else {
       // Si lastDrawTime n'est pas défini, c'est la première fois que l'utilisateur tire des cartes
-      await query("UPDATE Users SET firstDraw = true WHERE id = ?", [userId]);
+      await prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          firstDraw: true
+        }
+      });
+
       console.log("firstDraw = true");
 
     }

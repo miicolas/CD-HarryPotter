@@ -5,7 +5,7 @@ const pool = mysql.createPool({ // Création d'un pool de connexion à la base d
   host: "localhost",
   user: "root",
   password: "root",
-  database: "cdiharrypotter",
+  database: "cdi-hp",
   socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock", 
 });
 

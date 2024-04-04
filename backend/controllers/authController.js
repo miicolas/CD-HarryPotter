@@ -1,7 +1,9 @@
 // controllers/loginController.js
 import { hashPassword } from "../lib/utils.js";
-import { query } from "../config/queries.js";
 import jwt from "jsonwebtoken";
+
+import {PrismaClient} from '@prisma/client';
+const prisma = new PrismaClient();
 
 export async function login(req, res) {
   try { 
@@ -32,22 +34,47 @@ export async function signup(req, res) {
   try {
     const { username_signup, password_signup, email_signup } = req.body;
 
-    const confirmUsername = await query("SELECT username, email FROM Users WHERE username = ?", [username_signup]);
-    const confirmEmail = await query("SELECT email FROM Users WHERE email = ?", [email_signup]);
+    // Vérifie si l'utilisateur existe déjà
 
-    if (confirmUsername.length > 0) {
+    const confirmUsername = await prisma.user.findFirst({
+      where: {
+        username: username_signup
+      },
+      select: {
+
+        username: true
+      }
+
+    });
+
+    const confirmEmail = await prisma.user.findFirst({
+      where: {
+        email: email_signup
+      },
+      select: {
+        email: true
+      }
+
+    });
+
+
+
+    if (confirmUsername) {
       return res.status(400).json({ error: "L'utilisateur existe déjà" });
     } 
-    if (confirmEmail.length > 0) {
+    if (confirmEmail) {
       return res.status(400).json({ error: "L'email existe déjà" });
     }
 
     const hashedPassword = hashPassword(password_signup);
 
-    await query(
-      "INSERT INTO Users (email, username, password) VALUES (?, ?, ?)",
-      [email_signup, username_signup, hashedPassword]
-    );
+    await prisma.user.create({
+      data: {
+        email: email_signup,
+        username: username_signup,
+        password: hashedPassword
+      }
+    });
 
     res.redirect("/signin.html");
 
@@ -56,3 +83,4 @@ export async function signup(req, res) {
     res.status(500).json({ error: "Erreur lors de l'inscription" });
   }
 }
+

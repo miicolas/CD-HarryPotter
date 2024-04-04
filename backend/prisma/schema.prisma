@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Card {
+  id_card      String     @id
+  name         String
+  house        String
+  description  String
+  actor        String
+  power        String
+  rarity       Float
+  users        UserCard[]
+}
+
+model UserCard {
+  id_user_card Int      @id @default(autoincrement())
+  id_card      String
+  id_user      Int
+  addedAt      DateTime @default(now())
+  
+  user         User     @relation(fields: [id_user], references: [id])
+  card         Card     @relation(fields: [id_card], references: [id_card])
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String
+  username     String
+  password     String
+  firstDraw    Boolean   @default(false)
+  lastDraw     Int?   
+  
+  cards        UserCard[]
+  friends1     Friend[]  @relation("UserFriends1")
+  friends2     Friend[]  @relation("UserFriends2")
+}
+
+model Friend {
+  id_frienship Int       @id @default(autoincrement())
+  userID1      Int
+  userID2      Int
+  status       String    @default("pending")
+  
+  user1        User      @relation("UserFriends1", fields: [userID1], references: [id])
+  user2        User      @relation("UserFriends2", fields: [userID2], references: [id])
+}

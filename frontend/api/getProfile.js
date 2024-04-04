@@ -23,14 +23,16 @@ fetch("/getprofile")
         <div class="profile_card">
             <p class="profile_card_title">Prochain tirage</p>
             <div class="profil_card_content">
-            ${data.remaningTime}
+                
+            
+              ${data.remainingTime}  
             </div>
         </div>
         </div>
         
         `;
 
-    if (data.remaningTime !== "Tirer vos cartes") {
+    if (data.remainingTime !== "Tirer vos cartes") {
       htmlContent += `
         
           <div class="draw_button disabled">Tirer vos cartes</div>
@@ -38,7 +40,7 @@ fetch("/getprofile")
     } else {
       htmlContent += `
         <a href="/draw">
-          <div class="draw_button">${data.remaningTime}</div>
+          <div class="draw_button">${data.remainingTime}</div>
         </a>`;
     }
 

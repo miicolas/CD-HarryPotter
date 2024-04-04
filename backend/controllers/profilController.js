@@ -1,4 +1,5 @@
-import { query } from "../config/queries.js";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 export async function getProfil(req, res) {
   try {
@@ -7,28 +8,42 @@ export async function getProfil(req, res) {
       // Si l'id n'est pas défini, l'utilisateur n'est pas connecté
       return res.redirect("dashboard");
     }
-    console.log(userId);
-
-    const userInfo = await query(
-      "SELECT username, lastDraw FROM Users WHERE id = ?",
-      [userId]
-    ); // Récupère les infos de l'utilisateur à partir de l'id
+    
+    const userInfo = await prisma.user.findUnique({
+      where: {
+        id: userId
+      }, 
+      select: {
+        username: true,
+        lastDraw: true
+      }
+    });
 
     console.log(userInfo);
-    if (userInfo.length === 0) {
+    if (!userInfo) {
       // Si l'utilisateur n'a pas d'infos, il n'est pas connecté
       return res.redirect("dashboard");
     }
 
-    const numberCards = await query(
-      "SELECT COUNT(*) FROM UsersCards WHERE id_user = ?",
-      [userId]
-    ); // Récupère le nombre de cartes de l'utilisateur à partir de l'id
+    const numberCards = await prisma.userCard.count({
+      where: {
+        id_user: userId
+      }
+    });
+    console.log(numberCards, 'numberCards');
 
-    const cards_user = await query(
-      "SELECT * FROM Cards JOIN UsersCards ON cards.id_card = UsersCards.id_card WHERE id_user = ?",
-      [userId]
-    ); // Récupère les cartes de l'utilisateur à partir de l'id
+    // Récupère les cartes de l'utilisateur à partir de l'id de l'utilisateur et les jointures de la table userCard et card
+    const cards_user = await prisma.userCard.findMany({
+      where: {
+        id_user: userId,
+      },
+      include: {
+        card: true,
+      },
+    });
+    
+    
+    console.log(cards_user, 'cards_user');
 
     let message = ""; // Initialise le message si l'utilisateur n'a pas de cartes
 
@@ -36,41 +51,53 @@ export async function getProfil(req, res) {
       // Si l'utilisateur n'a pas de cartes, affiche un message
       message = "Vous n'avez pas encore de cartes";
     }
+    console.log(message);
+
+    const lastDraw = userInfo.lastDraw; // Récupère la date du dernier tirage
+    console.log(lastDraw);
     
-    const lastDraw = userInfo[0].lastDraw; // Récupère la date du dernier tirage
     const currentTime = new Date().getTime(); // Obtenir le temps actuel et le temps restant jusqu'au prochain tirage
-    const timeLeft = lastDraw + 24 * 60 * 60 * 1000 - currentTime; // Ajouter 24 heures en millisecondes pour le prochain tirage
+    console.log(currentTime);
+    const timeLeft = lastDraw + 24 * 60 * 60 * 1000 - currentTime;
+    console.log(timeLeft);
+
     const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000)); // Calcul des heures restantes
+    console.log(hoursLeft);
     const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)); // Calcul des minutes restantes;
+    console.log(minutesLeft);
 
-    const remaningTime = hoursLeft + minutesLeft;
-    console.log(remaningTime);
+    const remainingTime = hoursLeft + minutesLeft;
+    
+    
 
-    if (hoursLeft < 0 || minutesLeft < 0)
+    if (hoursLeft <= 0 || minutesLeft <= 0)
     {
+      let hoursLeft = 0;
+      let minutesLeft = 0;
+      console.log('Tirer vos cartes');
+      console.log(hoursLeft, minutesLeft);
       res.status(200).json({
-        username: userInfo[0].username,
+        username: userInfo.username,
         cards: cards_user,
         message: message,
-        numberCards: numberCards[0]["COUNT(*)"],
-        remaningTime: 'Tirer vos cartes',
+        numberCards: numberCards,
+        remainingTime: hoursLeft + "h " + minutesLeft + "m" ,
       });
     } else {
+      console.log('Vous devez attendre');
       res.status(200).json({
-        username: userInfo[0].username,
+        username: userInfo.username,
         cards: cards_user,
         message: message,
-        numberCards: numberCards[0]["COUNT(*)"],
-        remaningTime: hoursLeft + "h " + minutesLeft + "m",
+        numberCards: numberCards,
+        remainingTime: hoursLeft + "h " + minutesLeft + "m",
       });
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        error: "Erreur lors de la récupération du profil de l'utilisateur",
-      });
+    res.status(500).json({
+      error: "Erreur lors de la récupération du profil de l'utilisateur",
+    });
   }
 }
 
@@ -78,17 +105,23 @@ export async function getProfilSettings(req, res) {
   try {
     const userId = req.user.id; // Récupère l'id de l'utilisateur à partir du token
 
-    const userInfo = await query(
-      "SELECT username, email, lastDraw FROM Users WHERE id = ?",
-      [userId] // Récupère les infos de l'utilisateur à partir de l'id
-    );
+    const userInfo = await prisma.user.findUnique({
+      where: {
+        id: userId
+      }, 
+      select: {
+        username: true,
+        email: true,
+        lastDraw: true
+      }
+    });
 
-    if (userInfo.length === 0) {
+    if (!userInfo) {
       // Si l'utilisateur n'a pas d'infos, il n'est pas connecté
       return res.redirect("login");
     }
     
-    const lastDraw = userInfo[0].lastDraw; // Récupère la date du dernier tirage
+    const lastDraw = userInfo.lastDraw; // Récupère la date du dernier tirage
     const currentTime = new Date().getTime(); // Obtenir le temps actuel et le temps restant jusqu'au prochain tirage
     const timeLeft = lastDraw + 24 * 60 * 60 * 1000 - currentTime; // Ajouter 24 heures en millisecondes pour le prochain tirage
     const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000)); // Calcul des heures restantes
@@ -97,18 +130,16 @@ export async function getProfilSettings(req, res) {
     if (hoursLeft < 0 || minutesLeft < 0) {
       // Si le temps restant est négatif, le prochain tirage est disponible
       res.status(200).json({
-        username: userInfo[0].username,
-        name: userInfo[0].name,
-        email: userInfo[0].email,
+        username: userInfo.username,
+        email: userInfo.email,
         hoursLeft: 0,
         minutesLeft: 0,
       });
     } else {
       // Sinon, le prochain tirage n'est pas encore disponible
       res.status(200).json({
-        username: userInfo[0].username,
-        name: userInfo[0].name,
-        email: userInfo[0].email,
+        username: userInfo.username,
+        email: userInfo.email,
         hoursLeft: hoursLeft,
         minutesLeft: minutesLeft,
       });
@@ -120,4 +151,3 @@ export async function getProfilSettings(req, res) {
     });
   }
 }
-
