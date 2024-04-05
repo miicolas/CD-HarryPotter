@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 
 import { fileURLToPath } from "url";
 
-import router from '../router.js';
+import router from './router.js';
 
 
 
@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 
 
-app.use(express.static(path.join(__dirname, "../../frontend"))); // Permet de servir les fichiers statiques du dossier frontend
+app.use(express.static(path.join(__dirname, "../frontend"))); // Permet de servir les fichiers statiques du dossier frontend
 // Exemple d'utilisation du middleware pour bloquer l'accès à une rout
 
 

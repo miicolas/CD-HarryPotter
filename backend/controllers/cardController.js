@@ -1,10 +1,11 @@
 // controllers/profilController.js
-import { query } from "../config/queries.js";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 export async function getAllCards(req, res) {
   try {
-    console.log("getAllCards");
-    const cards = await query("SELECT id_card, name , house FROM cards"); // Récupère toutes les cartes de la base de données
+    const cards = await prisma.card.findMany(); // Récupère toutes les cartes de la base de données 
+    // console.log("getAllCards");
     res.status(200).json(cards);
   } catch (error) {
     console.error(error);
@@ -16,9 +17,23 @@ export async function getCard(req, res) {
   try {
     // Récupère l'id de la carte dans l'URL http://localhost:3000/cardinfo.html?card=albusdumbledore
     const cardId = req.query.card;
-    console.log("getCard", cardId);
-    const card = await query("SELECT * FROM cards WHERE id_card = ?", [cardId]); // Récupère une carte spécifique de la base de données
-    res.status(200).json(card[0]);
+    // console.log("getCard", cardId);
+   // Récupère une carte spécifique de la base de données
+    const card = await prisma.card.findUnique({
+      where: {
+        id_card: cardId
+      },
+      select: {
+        id_card: true,
+        name: true,
+        rarity: true,
+        description: true,
+        image: true,
+        house : true,
+      }
+    });
+    // console.log(card, 'check received card');
+    res.status(200).json(card);
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");

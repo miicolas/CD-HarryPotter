@@ -19,7 +19,10 @@ fetch("/searchcard?card=" + cardId)
             <p>${data.house}</p>
             <img src="../../img/cartes/${data.id_card}.jpg" alt="${data.name}">
           </div>
-        `;
+        
+        
+        
+          `;
     
             
   })

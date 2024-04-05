@@ -32,7 +32,7 @@ fetch("/getprofile")
         
         `;
 
-    if (data.remainingTime !== "Tirer vos cartes") {
+    if (data.remainingTime !== "Tirer vos cartes" && data.remainingTime !== "0h 0m") {
       htmlContent += `
         
           <div class="draw_button disabled">Tirer vos cartes</div>
@@ -40,7 +40,7 @@ fetch("/getprofile")
     } else {
       htmlContent += `
         <a href="/draw">
-          <div class="draw_button">${data.remainingTime}</div>
+          <div class="draw_button">Tirer vos cartes</div>
         </a>`;
     }
 
@@ -54,20 +54,20 @@ fetch("/getprofile")
 
     for (let i = 0; i < data.cards.length; i++) {
       cardsProfile.innerHTML += `
-          <div class="card" data-house="${data.cards[i].house}" data-id="${data.cards[i].name}">
+          <div class="card" data-house="${data.cards[i].card.house}" data-id="${data.cards[i].id_card}">
               <img
-                class="card_image"
-                src="../../img/cartes/${data.cards[i].id_card}.jpg"
-                alt="${data.cards[i].name}"
+                  class="card_image"
+                  src="../../img/cartes/${data.cards[i].id_card}.jpg"
+                  alt="${data.cards[i].card.name}"
               />
               <div class="card_buttons">
-                <a href="">
-                  <div class="card_button_readmore">En savoir plus</div>
-                </a>
+                  <a href="">
+                      <div class="card_button_readmore">En savoir plus</div>
+                  </a>
               </div>
-            </div>
-        `;
-    }
+          </div>
+      `;
+    }  
   })
   .catch((error) => {
     console.error("Error fetching data:", error);

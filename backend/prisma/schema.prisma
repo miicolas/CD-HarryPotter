@@ -29,7 +29,6 @@ model UserCard {
   id_user_card Int      @id @default(autoincrement())
   id_card      String
   id_user      Int
-  addedAt      DateTime @default(now())
   
   user         User     @relation(fields: [id_user], references: [id])
   card         Card     @relation(fields: [id_card], references: [id_card])
@@ -41,7 +40,7 @@ model User {
   username     String
   password     String
   firstDraw    Boolean   @default(false)
-  lastDraw     Int?   
+  lastDraw     BigInt?      
   
   cards        UserCard[]
   friends1     Friend[]  @relation("UserFriends1")

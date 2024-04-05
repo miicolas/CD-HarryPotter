@@ -42,7 +42,6 @@ export async function getProfil(req, res) {
       },
     });
     
-    
     console.log(cards_user, 'cards_user');
 
     let message = ""; // Initialise le message si l'utilisateur n'a pas de cartes
@@ -53,23 +52,14 @@ export async function getProfil(req, res) {
     }
     console.log(message);
 
-    const lastDraw = userInfo.lastDraw; // Récupère la date du dernier tirage
-    console.log(lastDraw);
-    
-    const currentTime = new Date().getTime(); // Obtenir le temps actuel et le temps restant jusqu'au prochain tirage
-    console.log(currentTime);
-    const timeLeft = lastDraw + 24 * 60 * 60 * 1000 - currentTime;
-    console.log(timeLeft);
+    const lastDrawBigInt = BigInt(userInfo.lastDraw); // Convertir la valeur de date en BigInt
+    const currentTimeBigInt = BigInt(new Date().getTime()); // Convertir le temps actuel en BigInt
+    const timeLeftBigInt = lastDrawBigInt + BigInt(24 * 60 * 60 * 1000) - currentTimeBigInt; // Calculer le temps restant en BigInt
+    const timeLeft = Number(timeLeftBigInt); // Convertir le temps restant en nombre entier
 
-    const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000)); // Calcul des heures restantes
-    console.log(hoursLeft);
-    const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)); // Calcul des minutes restantes;
-    console.log(minutesLeft);
-
-    const remainingTime = hoursLeft + minutesLeft;
+    const hoursLeft = timeLeft > 0 ? Math.floor(timeLeft / (60 * 60 * 1000)) : 0; // Calculer les heures restantes
+    const minutesLeft = timeLeft > 0 ? Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)) : 0; // Calculer les minutes restantes
     
-    
-
     if (hoursLeft <= 0 || minutesLeft <= 0)
     {
       let hoursLeft = 0;
