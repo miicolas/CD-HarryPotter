@@ -13,6 +13,12 @@ export async function validateLogin(req, res, next) {
     const result = await prisma.user.findMany({
       where: {
         email: email_login
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true
       }
     });
 

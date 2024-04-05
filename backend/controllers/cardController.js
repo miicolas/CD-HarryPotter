@@ -22,16 +22,9 @@ export async function getCard(req, res) {
     const card = await prisma.card.findUnique({
       where: {
         id_card: cardId
-      },
-      select: {
-        id_card: true,
-        name: true,
-        rarity: true,
-        description: true,
-        image: true,
-        house : true,
       }
     });
+    console.log(card);
     // console.log(card, 'check received card');
     res.status(200).json(card);
   } catch (error) {

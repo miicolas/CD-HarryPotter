@@ -43,16 +43,5 @@ model User {
   lastDraw     BigInt?      
   
   cards        UserCard[]
-  friends1     Friend[]  @relation("UserFriends1")
-  friends2     Friend[]  @relation("UserFriends2")
-}
 
-model Friend {
-  id_frienship Int       @id @default(autoincrement())
-  userID1      Int
-  userID2      Int
-  status       String    @default("pending")
-  
-  user1        User      @relation("UserFriends1", fields: [userID1], references: [id])
-  user2        User      @relation("UserFriends2", fields: [userID2], references: [id])
 }

@@ -50,39 +50,52 @@ export async function getProfil(req, res) {
       // Si l'utilisateur n'a pas de cartes, affiche un message
       message = "Vous n'avez pas encore de cartes";
     }
-    console.log(message);
+    console.log(message); 
 
-    const lastDrawBigInt = BigInt(userInfo.lastDraw); // Convertir la valeur de date en BigInt
-    const currentTimeBigInt = BigInt(new Date().getTime()); // Convertir le temps actuel en BigInt
-    const timeLeftBigInt = lastDrawBigInt + BigInt(24 * 60 * 60 * 1000) - currentTimeBigInt; // Calculer le temps restant en BigInt
-    const timeLeft = Number(timeLeftBigInt); // Convertir le temps restant en nombre entier
+    if (userInfo.lastDraw !== null) {
 
-    const hoursLeft = timeLeft > 0 ? Math.floor(timeLeft / (60 * 60 * 1000)) : 0; // Calculer les heures restantes
-    const minutesLeft = timeLeft > 0 ? Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)) : 0; // Calculer les minutes restantes
-    
-    if (hoursLeft <= 0 || minutesLeft <= 0)
-    {
-      let hoursLeft = 0;
-      let minutesLeft = 0;
-      console.log('Tirer vos cartes');
-      console.log(hoursLeft, minutesLeft);
-      res.status(200).json({
-        username: userInfo.username,
-        cards: cards_user,
-        message: message,
-        numberCards: numberCards,
-        remainingTime: hoursLeft + "h " + minutesLeft + "m" ,
-      });
+      const lastDrawBigInt = BigInt(userInfo.lastDraw); // Convertir la valeur de date en BigInt
+      const currentTimeBigInt = BigInt(new Date().getTime()); // Convertir le temps actuel en BigInt
+      const timeLeftBigInt = lastDrawBigInt + BigInt(24 * 60 * 60 * 1000) - currentTimeBigInt; // Calculer le temps restant en BigInt
+      const timeLeft = Number(timeLeftBigInt); // Convertir le temps restant en nombre entier
+      const hoursLeft = timeLeft > 0 ? Math.floor(timeLeft / (60 * 60 * 1000)) : 0; // Calculer les heures restantes
+      const minutesLeft = timeLeft > 0 ? Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000)) : 0; // Calculer les minutes restantes
+      
+      
+
+      if (hoursLeft <= 0 || minutesLeft <= 0)
+      {
+        let hoursLeft = 0;
+        let minutesLeft = 0;
+        console.log('Tirer vos cartes');
+        console.log(hoursLeft, minutesLeft);
+        res.status(200).json({
+          username: userInfo.username,
+          cards: cards_user,
+          message: message,
+          numberCards: numberCards,
+          remainingTime: hoursLeft + "h " + minutesLeft + "m" ,
+        });
+      } else {
+        console.log('Vous devez attendre');
+        res.status(200).json({
+          username: userInfo.username,
+          cards: cards_user,
+          message: message,
+          numberCards: numberCards,
+          remainingTime: hoursLeft + "h " + minutesLeft + "m",
+        });
+      }
     } else {
-      console.log('Vous devez attendre');
-      res.status(200).json({
-        username: userInfo.username,
-        cards: cards_user,
-        message: message,
-        numberCards: numberCards,
-        remainingTime: hoursLeft + "h " + minutesLeft + "m",
-      });
-    }
+    res.status(200).json({
+      username: userInfo.username,
+      cards: cards_user,
+      message: message,
+      numberCards: numberCards,
+      remainingTime: '0 h 0 m',
+    });
+  }
+
   } catch (error) {
     console.error(error);
     res.status(500).json({

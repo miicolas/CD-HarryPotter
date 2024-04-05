@@ -6,8 +6,6 @@ import cardRoute from "./routes/card.js";
 import drawRoute from "./routes/draw.js";
 import changeInfosRoute from "./routes/changeInfos.js"
 import protectedRoutes from "./routes/protectedRoutes.js"
-import friendsRoute from "./routes/friends.js"
-
 
 const router = express.Router();
 
@@ -17,7 +15,6 @@ router.use("/", profilRoute);
 router.use("/", cardRoute);
 router.use("/", drawRoute);
 router.use("/", changeInfosRoute);
-router.use("/", friendsRoute);
 
 // Protected routes
 router.use("/", protectedRoutes)

@@ -1,0 +1,73 @@
+@import url("global.css");
+
+.card_container {
+    display: flex;
+    padding: 1rem;
+   
+}
+
+.container_cardinfo {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+}
+
+.container_image {
+    
+    background-color: gray ; 
+    height: 75vh;
+    border-radius: 0.5rem;
+
+}
+
+.container_image img{
+
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.container_info {
+    flex: 1;
+    padding: 1rem;
+}
+
+.content_info {
+    display: flex;
+    gap : 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.content_info_icon {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--color-text);
+}
+
+.content_info_name {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    width: 100%;
+    text-align: center;
+}
+
+.container_display2 {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+}
+
+.content_info_container {
+    padding: 1rem 7.5rem;
+}
+
+.hero_content {
+    padding: 1rem;
+}
