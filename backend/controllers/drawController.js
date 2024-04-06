@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { shuffle } from '../utils/shuffle';
 const prisma = new PrismaClient();
 
 export async function getDrawCards(req, res) {
@@ -59,13 +60,4 @@ export async function getDrawCards(req, res) {
     console.error(error);
     res.status(500).send("Erreur serveur");
   }
-}
-
-// Fonction pour mélanger un tableau de manière aléatoire (algorithme de Fisher-Yates)
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
 }

@@ -1,5 +1,6 @@
 // authenticateToken middleware
 import jwt from 'jsonwebtoken';
+
  export default async function authenticateToken(req, res, next) {
   const token = req.cookies.AuthToken; // Récupération du token depuis les cookies
 
@@ -9,12 +10,12 @@ import jwt from 'jsonwebtoken';
   }
 
   // Vérification du token
-  jwt.verify(token, 'secretKey', (err, decodedToken) => { // Vérification du token avec la clé secrète qui a servi à le créer
-    if (err) {
-      console.log ('token invalide', err)
+  jwt.verify(token, 'secretKey', (error, decodedToken) => { // Vérification du token avec la clé secrète qui a servi à le créer
+    if (error) {
+      console.log ('token invalide', error)
       return res.redirect('/signin.html');
     }
-    req.user = decodedToken.user;
+    req.user = decodedToken.user; 
     next();
   });
 

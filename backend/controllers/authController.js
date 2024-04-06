@@ -12,7 +12,7 @@ export async function login(req, res) {
       httpOnly: true,  
       secure: false, 
       sameSite: "strict", 
-      expires: 0 ,
+      expires: 0,
     }).redirect('/dashboard'); // Redirige vers la page du profil
   } catch (error) {
     console.error(error);
