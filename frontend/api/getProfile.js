@@ -32,7 +32,7 @@ fetch("/getprofile")
         
         `;
 
-    if (data.remainingTime !== "Tirer vos cartes" && data.remainingTime !== "0h 0m") {
+    if (data.remainingTime !== "Tirer vos cartes" && data.remainingTime !== "0h 0m" && data.remainingTime !== "0 h 0 m") {
       htmlContent += `
         
           <div class="draw_button disabled">Tirer vos cartes</div>
@@ -44,8 +44,6 @@ fetch("/getprofile")
         </a>`;
     }
 
-    // Fermer la balise div principale
-    // htmlContent += `</div>`;
 
     // Ajouter le contenu HTML à profileContent une seule fois
     profileContent.innerHTML = htmlContent;
@@ -60,11 +58,7 @@ fetch("/getprofile")
                   src="../../img/cartes/${data.cards[i].id_card}.jpg"
                   alt="${data.cards[i].card.name}"
               />
-              <div class="card_buttons">
-                  <a href="">
-                      <div class="card_button_readmore">En savoir plus</div>
-                  </a>
-              </div>
+              
           </div>
       `;
     }  

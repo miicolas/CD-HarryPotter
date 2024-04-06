@@ -19,7 +19,7 @@ export async function getProfil(req, res) {
       }
     });
 
-    console.log(userInfo);
+    // console.log(userInfo);
     if (!userInfo) {
       // Si l'utilisateur n'a pas d'infos, il n'est pas connecté
       return res.redirect("dashboard");
@@ -30,7 +30,7 @@ export async function getProfil(req, res) {
         id_user: userId
       }
     });
-    console.log(numberCards, 'numberCards');
+    // console.log(numberCards, 'numberCards');
 
     // Récupère les cartes de l'utilisateur à partir de l'id de l'utilisateur et les jointures de la table userCard et card
     const cards_user = await prisma.userCard.findMany({
@@ -42,7 +42,7 @@ export async function getProfil(req, res) {
       },
     });
     
-    console.log(cards_user, 'cards_user');
+    // console.log(cards_user, 'cards_user');
 
     let message = ""; // Initialise le message si l'utilisateur n'a pas de cartes
 
@@ -92,7 +92,7 @@ export async function getProfil(req, res) {
       cards: cards_user,
       message: message,
       numberCards: numberCards,
-      remainingTime: '0 h 0 m',
+      remainingTime: '0h 0m',
     });
   }
 

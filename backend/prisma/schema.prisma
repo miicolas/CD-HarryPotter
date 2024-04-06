@@ -23,6 +23,7 @@ model Card {
   power        String
   rarity       Float
   users        UserCard[]
+  exchanges    Exchange[]
 }
 
 model UserCard {
@@ -32,6 +33,7 @@ model UserCard {
   
   user         User     @relation(fields: [id_user], references: [id])
   card         Card     @relation(fields: [id_card], references: [id_card])
+  exchanges    Exchange[]
 }
 
 model User {
@@ -43,5 +45,20 @@ model User {
   lastDraw     BigInt?      
   
   cards        UserCard[]
+  exchanges    Exchange[]
+
+}
+
+model Exchange {
+  id_exchange  Int      @id @default(autoincrement())
+  id_user      Int
+  id_card      String
+  id_user_card Int
+  status       String  @default("pending")
+  date         DateTime
+  
+  user         User     @relation(fields: [id_user], references: [id])
+  card         Card     @relation(fields: [id_card], references: [id_card])
+  userCard     UserCard @relation(fields: [id_user_card], references: [id_user_card])
 
 }

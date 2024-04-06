@@ -1,7 +1,6 @@
 // controllers/loginController.js
 import { hashPassword } from "../lib/utils.js";
 import jwt from "jsonwebtoken";
-
 import {PrismaClient} from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -41,7 +40,6 @@ export async function signup(req, res) {
         username: username_signup
       },
       select: {
-
         username: true
       }
 

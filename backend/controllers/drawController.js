@@ -1,74 +1,71 @@
-// controllers/drawController.js
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-
 
 export async function getDrawCards(req, res) {
   try {
     const userId = req.user.id; // Récupère l'id de l'utilisateur à partir du token
-    const cards = await prisma.card.findMany({
+
+    // Récupérer toutes les cartes disponibles
+    const allCards = await prisma.card.findMany({
       select: {
         id_card: true,
         rarity: true,
       },
-      orderBy: {
-        rarity: 'desc',
-      },
-      take: 5,
     });
-    console.log(cards);
 
+    // Mélanger les cartes de manière aléatoire
+    const shuffledCards = shuffle(allCards);
 
-    const cards_user = await prisma.userCard.findMany({ 
+    // Prendre les 5 premières cartes du mélange
+    const drawnCards = shuffledCards.slice(0, 5);
+
+    const userCard = await prisma.userCard.findMany({
       where: {
-        id_user: userId,
+        id_user: userId, 
       },
       select: {
         id_card: true,
       },
     });
-    
-    const cardsToAdd = []; // Initialise un tableau pour les cartes à ajouter
 
-    for (let i = 0; i < cards.length; i++) { // Parcours les cartes tirées
-      let cardExists = false; // Initialise une variable pour vérifier si la carte existe déjà
-      for (let j = 0; j < cards_user.length; j++) { // Parcours les cartes de l'utilisateur
-        if (cards[i].id_card === cards_user[j].id_card) { // Si la carte tirée existe déjà dans cards_user, cardExists est vrai
-          cardExists = true;
-          break; 
-        }
-      }
-      if (!cardExists) { // Si la carte n'existe pas, on l'ajoute à cardsToAdd
-        cardsToAdd.push(cards[i]); //
-         
-        await prisma.userCard.create({ // Ajoute la carte à la table userCard
+    // Ajouter les cartes tirées à la table userCard et vérifier si elles existent déjà
+    for (const card of drawnCards) {
+      const cardExists = userCard.find((userCard) => userCard.id_card === card.id_card);
+      if (!cardExists) {
+        await prisma.userCard.create({
           data: {
             id_user: userId,
-            id_card: cards[i].id_card,
+            id_card: card.id_card,
           },
         });
       }
     }
-    // console.log(cardsToAdd);
 
-    const date = new Date(); // Récupère la date actuelle
-    const currentTimeStamp = date.getTime(); // Récupère le timestamp de la date actuelle
-    console.log("currentTimeStamp", currentTimeStamp);
-
+    // Mettre à jour le timestamp du dernier tirage
+    const currentTimeStamp = Date.now();
     await prisma.user.update({
       where: {
-        id: userId
+        id: userId,
       },
       data: {
-        lastDraw: currentTimeStamp
-      }
+        lastDraw: currentTimeStamp,
+      },
     });
-    
-    // Met à jour le timestamp du dernier tirage
-    res.redirect("/dashboard"); // Redirige vers la page du profil
-    
+
+    // Rediriger vers la page du profil
+    res.redirect("/dashboard");
+
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");
   }
+}
+
+// Fonction pour mélanger un tableau de manière aléatoire (algorithme de Fisher-Yates)
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }

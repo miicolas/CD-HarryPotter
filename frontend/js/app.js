@@ -336,6 +336,24 @@ function cardInfo (){
 
 }
 
+function newRequestExchange() {
+        const btnExchange = document.getElementById("btn_exchange");
+        const exchangeForm = document.getElementById("exchange");
+        const closeExchange = document.getElementById("close_exchange");
+
+        if (btnExchange && exchangeForm && closeExchange) {
+            btnExchange.addEventListener("click", function () {
+                exchangeForm.style.display = "block";
+            });
+
+            closeExchange.addEventListener("click", function () {
+                exchangeForm.style.display = "none";
+            });
+        }
+    ;
+
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   
   navTap();
@@ -343,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
   burgerMenu();
   darkMode();
   formVerificationLogin();
+  newRequestExchange();
   
   // formVerificationSignup();
   // Carousel();

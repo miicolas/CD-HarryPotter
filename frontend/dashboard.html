@@ -72,6 +72,27 @@
       </nav>
     </header>
     <main>
+      <section id="exchange">
+        <div class="exchange_container_request">
+        <div>
+            Nouvelle demande
+        </div>
+        <div class="close_exchange" id="close_exchange">
+            <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+                <path d="M7.412,24,6,22.588l9.881-9.881a1,1,0,0,0,0-1.414L6.017,1.431,7.431.017l9.862,9.862a3,3,0,0,1,0,4.242Z"/>
+            </svg>
+        </div>
+        <form class="form_exchange" method="post" action="/exchange/request">
+            <label for="card_name_give">Nom de la carte que vous voulez échanger</label>
+            <input type="text" name="card_name_give" id="card_name_give">
+            <label for="card_name_want">Nom de la carte souhaitée</label>
+            <input type="text" name="card_name_want" id="card_name_want">
+            <label for ="card_user">Nom de l'utilisateur</label>
+            <input type="text" name="card_user" id="card_user">
+            <button class="btn_exchange">Envoyer</button>
+        </form>
+      </div>
+    </section>
       <section id="dashboard">
         <div class="dashboard_container">
           <div class="dashboard_content profile_container">
@@ -82,6 +103,9 @@
           <div class="dashboard_content exchange_container">
             <div class="dashboard_content_title">
               <h2>Vos demandes d'échanges</h2>
+              
+              <button class="btn_exchange" id="btn_exchange">Nouvelle demande</button>
+              
             </div>
             <div class="dashboard_container_requests">
               <div class="dashboard_content_request">

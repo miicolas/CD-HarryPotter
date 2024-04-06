@@ -23,7 +23,8 @@ export default async function drawTime(req, res, next) {
     const currentTime = Date.now(); // Heure actuelle en millisecondes
 
     if (lastDrawTime !== null && lastDrawTime !== undefined) {
-      const elapsedTime = currentTime - new Date(lastDrawTime).getTime(); // Temps écoulé depuis le dernier tirage en millisecondes
+      const elapsedTime = currentTime - Number(lastDrawTime); // or lastDrawTime.valueOf()
+
       const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;  // 24 heures en millisecondes
 
       if (elapsedTime < twentyFourHoursInMillis) {
