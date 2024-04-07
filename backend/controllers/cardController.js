@@ -2,7 +2,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export async function getAllCards(res) {
+export async function getAllCards(req ,res) {
   try {
     const cards = await prisma.card.findMany(); // Récupère toutes les cartes de la base de données 
     // console.log("getAllCards");

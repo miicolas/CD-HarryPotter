@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { shuffle } from '../utils/shuffle';
+import { shuffle } from "../lib/utils.js";
 const prisma = new PrismaClient();
 
 export async function getDrawCards(req, res) {
