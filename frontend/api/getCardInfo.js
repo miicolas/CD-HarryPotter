@@ -54,8 +54,22 @@ fetch("/searchcard?card=" + cardId)
         </div>
       </div>  
   `;
+  fetch("/iot/updateLastVisited", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ lastVisited: data.house })
+
   })
+  })
+
+  
 
   .catch((error) => {
     console.error("Error fetching data:", error);
   });
+
+
+
+

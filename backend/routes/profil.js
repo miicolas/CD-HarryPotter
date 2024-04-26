@@ -7,4 +7,4 @@ import { getProfil, getProfilSettings} from "../controllers/profilController.js"
 router.get("/getprofile", authenticateToken, getProfil); // Vérifie le token et renvoie les infos de l'utilisateur du profil
 router.get("/getuserinfos", authenticateToken, getProfilSettings);  // Vérifie le token et renvoie les infos de l'utilisateur pour les réglages du compte
 
-export default router; // Exportation du router
+export default router; 

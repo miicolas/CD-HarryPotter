@@ -43,13 +43,12 @@ export async function getDrawCards(req, res) {
     }
 
     // Mettre à jour le timestamp du dernier tirage
-    const currentTimeStamp = Date.now();
     await prisma.user.update({
       where: {
         id: userId,
       },
       data: {
-        lastDraw: currentTimeStamp,
+        lastDraw: new Date(),
       },
     });
 

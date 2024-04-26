@@ -42,7 +42,7 @@ model User {
   username     String
   password     String
   firstDraw    Boolean   @default(false)
-  lastDraw     BigInt?      
+  lastDraw     DateTime?  
   
   cards        UserCard[]
   exchanges    Exchange[]

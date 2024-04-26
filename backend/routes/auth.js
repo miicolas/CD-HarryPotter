@@ -9,4 +9,4 @@ router.post("/signup", validateSignup, signup); // Vérifie les données du form
 router.get("/logout", validateLogout, logout);  // Supprime le token pour déconnecter l'utilisateur
 router.post("/login", validateLogin, login);  // Vérifie les données du formulaire de connexion et connecte l'utilisateur
 
-export default router;
+export default router; 

@@ -16,22 +16,27 @@ export default async function drawTime(req, res, next) {
       }
     });
 
-    const lastDrawTime = user ? user.lastDraw : null;
+  
 
-    console.log(lastDrawTime);
+    console.log(user.lastDraw);
 
-    const currentTime = Date.now(); // Heure actuelle en millisecondes
+    if (user.lastDraw) {
+      // Si lastDraw date de ya moins de 24h, l'utilisateur ne peut pas tirer de nouvelles cartes, last draw est défini sous cette forme : 2021-09-01T14:00:00.000Z
 
-    if (lastDrawTime !== null && lastDrawTime !== undefined) {
-      const elapsedTime = currentTime - Number(lastDrawTime); // or lastDrawTime.valueOf()
+      const lastDrawTime = new Date(user.lastDraw).getTime();
+      const currentTime = new Date().getTime();
 
-      const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;  // 24 heures en millisecondes
+      const timeDifference = currentTime - lastDrawTime;
+      const timeDifferenceInHours = timeDifference / (1000 * 3600);
 
-      if (elapsedTime < twentyFourHoursInMillis) {
-        return res
-          .status(403)
-          .send("Vous ne pouvez pas tirer de nouvelles cartes pour le moment. Attendez 24 heures.");
+      if (timeDifferenceInHours < 24) {
+        return res.status(403).send("Vous ne pouvez pas tirer de nouvelles cartes pour le moment");
       }
+
+      console.log("lastDrawTime = true");
+
+
+      
     } else {
       // Si lastDrawTime n'est pas défini, c'est la première fois que l'utilisateur tire des cartes
       await prisma.user.update({
@@ -39,9 +44,12 @@ export default async function drawTime(req, res, next) {
           id: userId
         },
         data: {
-          firstDraw: true
+          firstDraw: true,
+          lastDraw: new Date()
         }
       });
+
+
 
       console.log("firstDraw = true");
     }
