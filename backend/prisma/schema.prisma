@@ -13,52 +13,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Card {
-  id_card      String     @id
-  name         String
-  house        String
-  description  String
-  actor        String
-  power        String
-  rarity       Float
-  users        UserCard[]
-  exchanges    Exchange[]
+  id_card     String     @id
+  name        String
+  house       String
+  description String
+  actor       String
+  power       String
+  rarity      Float
+  users       UserCard[]
+  exchanges   Exchange[]
 }
 
 model UserCard {
-  id_user_card Int      @id @default(autoincrement())
+  id_user_card Int    @id @default(autoincrement())
   id_card      String
   id_user      Int
-  
-  user         User     @relation(fields: [id_user], references: [id])
-  card         Card     @relation(fields: [id_card], references: [id_card])
-  exchanges    Exchange[]
+
+  user User @relation(fields: [id_user], references: [id])
+  card Card @relation(fields: [id_card], references: [id_card])
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  email        String
-  username     String
-  password     String
-  firstDraw    Boolean   @default(false)
-  lastDraw     DateTime?  
-  
-  cards        UserCard[]
-  exchanges    Exchange[]
+  id        Int       @id @default(autoincrement())
+  email     String
+  username  String
+  password  String
+  firstDraw Boolean   @default(false)
+  lastDraw  DateTime?
 
+  cards     UserCard[]
+  exchanges Exchange[]
 }
 
 model Exchange {
-  id_exchange  Int      @id @default(autoincrement())
-  id_user      Int
-  id_card      String
-  id_user_card Int
-  status       String  @default("pending")
-  date         DateTime
-  
-  user         User     @relation(fields: [id_user], references: [id])
-  card         Card     @relation(fields: [id_card], references: [id_card])
-  userCard     UserCard @relation(fields: [id_user_card], references: [id_user_card])
+  id_exchange   Int      @id @default(autoincrement())
+  id_user       Int
+  id_card       String
+  id_card_want  String
+  id_user_asked Int
+  status        String   @default("pending")
+  date          DateTime
 
+  user User @relation(fields: [id_user], references: [id])
+  card Card @relation(fields: [id_card], references: [id_card])
 }

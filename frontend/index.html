@@ -53,7 +53,7 @@
     </header>
 
     <main>
-      <section id="hero"> 
+      <section id="hero">
         <div class="hero_background">
           <video class="hero_background_content" autoplay muted loop>
             <source src="img/hero.mp4" type="video/mp4" />
@@ -73,7 +73,7 @@
             <div class="swiper-slide">
               <div class="swiper-slide-content">
                 <h2>Collectionnez vos cartes</h2>
-                <p>
+                <p class="swiper-slide-description">
                   Collectionnez vos cartes et échangez-les avec vos amis pour
                   compléter votre collection.
                 </p>
@@ -164,25 +164,49 @@
       </section>
       <section id="cards">
         <div class="cards_container">
-          <div class="cards_container_filter">
-            <div class="filter-button" id="filterType">
-              <button data-house="Tous" class="select" id="BtnAll">Tous</button>
-              <button data-house="Gryffondor" id="BtnGryff">Gryffondor</button>
-              <button data-house="Poufsouffle" id="BtnPouff">
-                Poufsouffle
-              </button>
-              <button data-house="Serdaigle" id="BtnSerdaigle">Serdaigle</button>
-              <button data-house="Serpentard" id="BtnSerpen">Serpentard</button>
+          <div class="container_search">
+
+
+            <div class="search-container">
+              <!-- Container de la barre de recherche :  -->
+              <input type="search" id="search"
+                placeholder="Search for names..."/>
+            </div>
+            <div class="cards_container_filter">
+              <div class="filter-button" id="filterType">
+                <button data-house="Tous" class="select" id="BtnAll">Tous</button>
+                <button data-house="Gryffondor" id="BtnGryff">Gryffondor</button>
+                <button data-house="Poufsouffle" id="BtnPouff">
+                  Poufsouffle
+                </button>
+                <button data-house="Serdaigle" id="BtnSerdaigle">Serdaigle</button>
+                <button data-house="Serpentard" id="BtnSerpen">Serpentard</button>
+              </div>
             </div>
           </div>
-          <div class="cards_container_gallery">
-            
+
+              <div class="cards_container_gallery">
+                  <!-- Vos éléments de contenu ici -->
+              </div>
+
+
+          </div>
             </div>
+          </div>
           </div>
         </div>
       </section>
     </main>
-    <footer></footer>
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="copyright">© 2024 <a href="#" class="copyright-link">HarryPotter™</a>. Tous droits réservés.</span>
+            <ul class="footer-links">
+                <li><a href="#" class="footer-link">Connexion</a></li>
+                <li><a href="#" class="footer-link">Politique de confidentialité</a></li>
+                <li><a href="#" class="footer-link">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
     <script src="api/getCards.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/app.js"></script>

@@ -1,133 +1,145 @@
 #rules {
-  position: relative;
-  padding: 2rem 2rem 5rem 2rem;
-  background-color: #161410;
+    position: relative;
+    padding: 2rem 2rem 5rem 2rem;
+    background-color: #161410;
 }
 
 .rules_container {
-
-  justify-content: center; 
-  align-items: center;
-
+    justify-content: center;
+    align-items: center;
 }
 
 .rules_panel {
-
-  color: var(--color-text-2);
-  transition: all 0.3s ease-out;
-  margin-top: 2rem;
-  text-align: center;
+    color: var(--color-text-2);
+    transition: all 0.3s ease-out;
+    margin-top: 2rem;
+    text-align: center;
 }
 
 .rules_panel h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  z-index: 10;
-  color: var(--color-text);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    z-index: 10;
+    color: var(--color-text);
 }
 
 .rules_grid_content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-column-gap: 2rem;
-  grid-row-gap: 2rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 2rem;
+    grid-row-gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
 }
 
 .rules_content {
-  background: var(--background-color);
-  max-width: 20rem;
-  border-radius: 0.5rem;
-  color: var(--color-text);
-  margin: auto;
-  box-shadow: #14213D 0px 0px 10px;
-  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    background: var(--background-color);
+    max-width: 20rem;
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    margin: auto;
+    box-shadow: #14213d 0px 20px 30px;
+    transition:
+        transform 0.3s ease-out,
+        box-shadow 0.3s ease-out;
 }
 .rules_content.dark-mode {
-  background: var(--background-color-dark);
-  color: var(--color-text-3);
+    background: var(--background-color-dark);
+    color: var(--color-text-3);
 }
 .rules_content:hover {
-  transform: scale(1.05);
-  transition: all 0.3s ease-out;
-  box-shadow: #14213D 0px 0px 20px;
-  cursor: pointer;
-
+    transform: scale(1.05);
+    transition: all 0.3s ease-out;
+    box-shadow: #14213d 0px 20px 50px;
+    cursor: pointer;
 }
 
 .rules_content_image_container {
-  position: relative;
-  width: 100%;
-  height: 10rem;
-  overflow: hidden;
-  border-radius: 0.5rem;
+    position: relative;
+    width: 100%;
+    height: 10rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
 }
 
 .rules_content_image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0.5rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s ease-out;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-out;
 }
 
 .rules_content:hover .rules_content_image {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .rules_content_description p {
-  color: var(--color-text-hover);
-  transition: color 0.3s ease-out;
+    color: var(--color-text-hover);
+    transition: color 0.3s ease-out;
 }
 
 .rules_content:hover .rules_content_description p {
-  color: var(--color-text);
-  transition: all 0.3s ease-out;
+    color: var(--color-text);
+    transition: all 0.3s ease-out;
 }
 
 .rules_content_description {
-  padding: 1rem;
-  text-align: center;
+    padding: 1rem;
+    text-align: center;
 }
 
 .rules_button {
-  margin-top: 2rem;
+    margin-top: 2rem;
 }
 
-.rules_button svg{
-  height: 2rem;
-  width: 2rem;
-  fill: var(--color-text-3);
-  transition: all 0.3s ease-out;
+.rules_button svg {
+    height: 2rem;
+    width: 2rem;
+    fill: var(--color-text-3);
+    transition: all 0.3s ease-out;
 }
 
 .button-primary:hover svg {
-  fill: var(--color-text-3-hover);
-  transition: all 0.3s ease-out;
-  transform: translateX(0.5rem);
+    fill: var(--color-text-3-hover);
+    transition: all 0.3s ease-out;
+    transform: translateX(0.5rem);
 }
 
 .button-primary.rules_button {
-  margin-top: 2rem; 
-  gap: 1rem;
-
+    margin-top: 2rem;
+    gap: 1rem;
 }
 .fade-in {
-  background: linear-gradient(to bottom, rgba(14, 6, 4, 1) 0%, rgba(14, 6, 4, .738) 19%, rgba(14, 6, 4, .541) 34%, rgba(14, 6, 4, .382) 47%, rgba(14, 6, 4, .278) 56.5%, rgba(14, 6, 4, .194) 65%, rgba(14, 6, 4, .126) 73%, rgba(14, 6, 4, .075) 80.2%, rgba(14, 6, 4, .042) 86.1%, rgba(14, 6, 4, .021) 91%, rgba(14, 6, 4, .008) 95.2%, rgba(14, 6, 4, .002) 98.2%, rgba(14, 6, 4, 0) 100%);
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 15rem;
+    background: linear-gradient(
+        to bottom,
+        rgba(14, 6, 4, 1) 0%,
+        rgba(14, 6, 4, 0.738) 19%,
+        rgba(14, 6, 4, 0.541) 34%,
+        rgba(14, 6, 4, 0.382) 47%,
+        rgba(14, 6, 4, 0.278) 56.5%,
+        rgba(14, 6, 4, 0.194) 65%,
+        rgba(14, 6, 4, 0.126) 73%,
+        rgba(14, 6, 4, 0.075) 80.2%,
+        rgba(14, 6, 4, 0.042) 86.1%,
+        rgba(14, 6, 4, 0.021) 91%,
+        rgba(14, 6, 4, 0.008) 95.2%,
+        rgba(14, 6, 4, 0.002) 98.2%,
+        rgba(14, 6, 4, 0) 100%
+    );
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 15rem;
 }
 @media (max-width: 1024px) {
-  .rules_grid_content {
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
+    .rules_grid_content {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
 }

@@ -1,60 +1,23 @@
 function darkMode() {
   const darkModeButton = document.querySelectorAll(".dark_mode_button");
-  const rulesContent = document.querySelectorAll(".rules_content");
   const body = document.querySelector("body");
-  const titleForm = document.querySelectorAll(".tab_content_title");
-  const labelForm = document.querySelectorAll("label");
+  const elementsToToggle = document.querySelectorAll(".dark-mode-toggle");
+
+  const toggleDarkMode = () => {
+    body.classList.toggle("dark-mode");
+    elementsToToggle.forEach((element) => {
+      element.classList.toggle("dark-mode");
+    });
+    localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
+  };
+
+  darkModeButton.forEach((button) => {
+    button.addEventListener("click", toggleDarkMode);
+  });
 
   if (localStorage.getItem("darkMode") === "true") {
-    body.classList.add("dark-mode");
-    rulesContent.forEach((container) => {
-      container.classList.add("dark-mode");
-    });
-    titleForm.forEach((title) => {
-      title.classList.add("dark-mode");
-    });
-    labelForm.forEach((form) => {
-      form.classList.add("dark-mode");
-    });
-  } else {
-    body.classList.remove("dark-mode");
-    rulesContent.forEach((container) => {
-      container.classList.remove("dark-mode");
-    });
-    titleForm.forEach((title) => {
-      title.classList.remove("dark-mode");
-    });
-    labelForm.forEach((form) => {
-      form.classList.remove("dark-mode");
-    });
+    toggleDarkMode();
   }
-  darkModeButton.forEach((button) => {
-    button.addEventListener("click", function () {
-      body.classList.toggle("dark-mode");
-      rulesContent.forEach((container) => {
-        container.classList.toggle("dark-mode");
-      });
-      titleForm.forEach((title) => {
-        title.classList.toggle("dark-mode");
-      });
-      labelForm.forEach((form) => {
-        form.classList.toggle("dark-mode");
-      });
-      localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
-      localStorage.setItem(
-        "darkMode",
-        rulesContent.classList.contains("dark-mode")
-      );
-      localStorage.setItem(
-        "darkMode",
-        titleForm.classList.contains("dark-mode")
-      );
-      localStorage.setItem(
-        "darkMode",
-        labelForm.classList.contains("dark-mode")
-      );
-    });
-  });
 }
 
 function Carousel() {
@@ -76,6 +39,43 @@ function Carousel() {
     },
   });
   if (!swiper) return;
+}
+
+function searchCard() {
+  const searchInput = document.getElementById("search");
+  if (!searchInput) return;
+  console.log(searchInput);
+
+  searchInput.addEventListener("input", function () {
+    const galleryItems = document.querySelectorAll(".card");
+    console.log(galleryItems);
+
+    const searchValue = searchInput.value.trim().toLowerCase(); // trim() supprime les espaces avant et après la chaîne de caractères
+    console.log("Valeur ", searchValue);
+    console.log("Items ", galleryItems);
+
+    galleryItems.forEach(function (item) {
+      // Vérifiez que l'élément possède bien un attribut data-id
+
+      const dataId = item.getAttribute("data-id");
+      console.log("Data id: ", dataId);
+
+      // Vérifiez si l'attribut data-id est null ou non
+      if (dataId !== null) {
+        const lowerCaseDataId = dataId.toLowerCase(); // Convertissez la valeur de l'attribut data-id en minuscules
+
+        if (lowerCaseDataId.includes(searchValue)) {
+          // Vérifiez si la valeur de l'attribut data-id contient la valeur de la recherche
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+        }
+      } else {
+        // Si l'attribut data-id est null, affichez un message dans la console pour le signaler
+        console.log("Attribut manquant");
+      }
+    });
+  });
 }
 
 function navTap() {
@@ -292,83 +292,49 @@ function filterCards() {
   }
 }
 
-function buttonFriends() {
-  // Dans votre frontend JavaScript où vous gérez les clics sur le bouton "Accepter"
-  const acceptButtons = document.querySelectorAll(".acceptButton");
-  const deleteButtons = document.querySelectorAll(".deleteButton");
-  if (!deleteButtons) return;
-  if (acceptButtons) {
-    acceptButtons.forEach((button) => {
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-        const username = button.closest(".friend").getAttribute("data-username");
-        // Utilisez le nom d'utilisateur pour construire l'URL de la requête
-        window.location.href = `/acceptFriend?friend=${username}`;
-      });
-    });
-  }
-  if (deleteButtons){
-    deleteButtons.forEach((button) => {
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-        const username = button.closest(".friend").getAttribute("data-username");
-        // Utilisez le nom d'utilisateur pour construire l'URL de la requête
-        window.location.href = `/deletefriend?friend=${username}`;
-      });
-    });
-  
-  }
-}
-
-function cardInfo (){
+function cardInfo() {
   const card = document.querySelectorAll(".card_button_readmore");
-  
+
   if (!card) return;
   card.forEach((card) => {
     card.addEventListener("click", function () {
       const cardId = card.closest(".card").getAttribute("data-id");
-      console.log(cardId, "cardId appjs")
+      console.log(cardId, "cardId appjs");
       // renvoie sur la page de la carte
       window.location.href = `/cardinfo.html?card=${cardId}`;
-
     });
   });
-
 }
 
 function newRequestExchange() {
-        const btnExchange = document.getElementById("btn_exchange");
-        const exchangeForm = document.getElementById("exchange");
-        const closeExchange = document.getElementById("close_exchange");
+  const btnExchange = document.getElementById("btn_exchange");
+  const exchangeForm = document.getElementById("exchange");
+  const closeExchange = document.getElementById("close_exchange");
 
-        if (btnExchange && exchangeForm && closeExchange) {
-            btnExchange.addEventListener("click", function () {
-                exchangeForm.style.display = "block";
-            });
+  if (btnExchange && exchangeForm && closeExchange) {
+    btnExchange.addEventListener("click", function () {
+      exchangeForm.style.display = "block";
+    });
 
-            closeExchange.addEventListener("click", function () {
-                exchangeForm.style.display = "none";
-            });
-        }
-    ;
-
+    closeExchange.addEventListener("click", function () {
+      exchangeForm.style.display = "none";
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  
   navTap();
   openTab();
   burgerMenu();
   darkMode();
   formVerificationLogin();
   newRequestExchange();
-  
+
   // formVerificationSignup();
   // Carousel();
   filterCards();
+  searchCard();
   setTimeout(() => {
-    cardInfo();}, 1000);
-  setTimeout(() => {
-    buttonFriends();
-  }, 100);
+    cardInfo();
+  }, 1000);
 });
