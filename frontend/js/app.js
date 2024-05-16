@@ -176,6 +176,9 @@ function formVerificationLogin() {
   formLogin.addEventListener("submit", function (e) {
     e.preventDefault();
     let email = document.querySelector("#email_login");
+
+    localStorage.setItem("email", email.value);
+
     let password = document.querySelector("#password_login");
 
     const errorList = document.getElementById("error_list");

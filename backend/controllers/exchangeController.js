@@ -85,7 +85,7 @@ export async function requestExchange(req, res) {
       },
     });
 
-    return res.status(200).json({ message: "Demande d'échange envoyée" });
+    return res.status(200).redirect("/dashboard");
   } catch (error) {
     console.error(error);
     return res
@@ -205,7 +205,43 @@ export async function acceptExchange(req, res) {
       },
     });
 
-    return res.redirect("/dashboard");
+    console.log(updateExchange, "updateExchange");
+
+    return res.redirect("/dashboard.html");
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur dans la récupération des informations" });
+  }
+}
+
+export async function refuseExchange(req, res) {
+  try {
+    const requestId = req.params.id;
+
+    console.log(requestId, "requestId");
+
+    const exchangeInfo = await prisma.exchange.findFirst({
+      where: {
+        id_exchange: parseInt(requestId),
+      },
+    });
+
+    console.log(exchangeInfo, "exchangeInfo");
+
+    const updateExchange = await prisma.exchange.update({
+      where: {
+        id_exchange: parseInt(requestId),
+      },
+      data: {
+        status: "refused",
+      },
+    });
+
+    console.log(updateExchange, "updateExchange");
+
+    return res.redirect("/dashboard.html");
   } catch (error) {
     console.error(error);
     return res

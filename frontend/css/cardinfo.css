@@ -8,10 +8,6 @@
     display: flex;
 }
 
-.back_button {
-    margin-left: -50%;
-}
-
 .back_button svg {
     height: 2rem;
     width: 2rem;
