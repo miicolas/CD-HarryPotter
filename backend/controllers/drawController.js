@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 import { shuffle } from "../lib/utils.js";
 const prisma = new PrismaClient();
 
 export async function getDrawCards(req, res) {
   try {
     const userId = req.user.id; // Récupère l'id de l'utilisateur à partir du token
-
+    console.log(userId, "userId");
     // Récupérer toutes les cartes disponibles
     const allCards = await prisma.card.findMany({
       select: {
@@ -22,7 +22,7 @@ export async function getDrawCards(req, res) {
 
     const userCard = await prisma.userCard.findMany({
       where: {
-        id_user: userId, 
+        id_user: userId,
       },
       select: {
         id_card: true,
@@ -31,7 +31,9 @@ export async function getDrawCards(req, res) {
 
     // Ajouter les cartes tirées à la table userCard et vérifier si elles existent déjà
     for (const card of drawnCards) {
-      const cardExists = userCard.find((userCard) => userCard.id_card === card.id_card);
+      const cardExists = userCard.find(
+        (userCard) => userCard.id_card === card.id_card,
+      );
       if (!cardExists) {
         await prisma.userCard.create({
           data: {
@@ -54,7 +56,6 @@ export async function getDrawCards(req, res) {
 
     // Rediriger vers la page du profil
     res.redirect("/dashboard");
-
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");

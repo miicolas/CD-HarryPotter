@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 export async function requestExchange(req, res) {
   try {
     const userId = req.user.id; // Récupère l'id de l'utilisateur à partir du token
+    console.log(userId, "userId");
     const requestInfo = req.body;
 
     console.log(requestInfo, "requestInfo");
@@ -207,7 +208,7 @@ export async function acceptExchange(req, res) {
 
     console.log(updateExchange, "updateExchange");
 
-    return res.redirect("/dashboard.html");
+    res.redirect("/dashboard.html");
   } catch (error) {
     console.error(error);
     return res
@@ -241,7 +242,7 @@ export async function refuseExchange(req, res) {
 
     console.log(updateExchange, "updateExchange");
 
-    return res.redirect("/dashboard.html");
+    res.redirect("/dashboard.html");
   } catch (error) {
     console.error(error);
     return res
