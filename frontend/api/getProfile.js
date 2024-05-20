@@ -1,5 +1,12 @@
+const token = localStorage.getItem("token");
+
 async function likeCard(cardId) {
-  return fetch(`/likecard/${cardId}`, { method: "POST" })
+  return fetch(`/likecard/${cardId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((response) => response.json())
     .catch((error) => {
       console.error("Erreur lors de la mise à jour de la carte:", error);
@@ -7,9 +14,16 @@ async function likeCard(cardId) {
 }
 
 function acceptExchangeRequest(requestId) {
-  fetch(`/exchange/accept/${requestId}`, { method: "POST" })
-    .then((response) => {
-      // Gérer la réponse si nécessaire
+  fetch(`/exchange/accept/${requestId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      window.location.href = "/dashboard.html";
     })
     .catch((error) => {
       console.error(
@@ -21,9 +35,16 @@ function acceptExchangeRequest(requestId) {
 
 // Fonction pour refuser une demande d'échange
 function refuseExchangeRequest(requestId) {
-  fetch(`/exchange/refuse/${requestId}`, { method: "POST" })
+  fetch(`/exchange/refuse/${requestId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((response) => {
-      // Gérer la réponse si nécessaire
+      if (response.ok) {
+        window.location.href = "/dashboard.html";
+      }
     })
     .catch((error) => {
       console.error("Erreur lors du refus de la demande d'échange:", error);
@@ -31,7 +52,12 @@ function refuseExchangeRequest(requestId) {
 }
 
 function fetchAndRenderProfile() {
-  fetch("/getprofile")
+  fetch("/getprofile", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -63,21 +89,6 @@ function fetchAndRenderProfile() {
             </div>
           </div>
           `;
-
-      if (
-        data.remainingTime !== "Tirer vos cartes" &&
-        data.remainingTime !== "0h 0m" &&
-        data.remainingTime !== "0 h 0 m"
-      ) {
-        htmlContent += `
-            <div class="draw_button disabled">Tirer vos cartes</div>
-          `;
-      } else {
-        htmlContent += `
-          <a href="/draw">
-            <div class="draw_button">Tirer vos cartes</div>
-          </a>`;
-      }
 
       // Ajouter le contenu HTML à profileContent une seule fois
       profileContent.innerHTML = htmlContent;
@@ -119,7 +130,12 @@ function fetchAndRenderProfile() {
       });
 
       // Fetch pour récupérer les demandes d'échange
-      fetch("/exchange/getrequests")
+      fetch("/exchange/getrequests", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => response.json())
         .then((exchangeData) => {
           let exchangeRequest = document.querySelector(
@@ -202,4 +218,5 @@ function fetchAndRenderProfile() {
     });
 }
 
+// Appel de la fonction fetchAndRenderProfile et ajout de l'écouteur d'événements après le rendu du profil
 fetchAndRenderProfile();

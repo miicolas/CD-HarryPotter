@@ -31,9 +31,7 @@
                 </a>
                 </li>
                 <li>
-                <a href="/auth/logout">
-                    <div class="button_nav">Déconnexion</div>
-                </a>
+                    <div class="button_nav logout">Déconnexion</div>
                 </li>
             </ul>
         </div>
@@ -103,7 +101,7 @@
                 <path d="M7.412,24,6,22.588l9.881-9.881a1,1,0,0,0,0-1.414L6.017,1.431,7.431.017l9.862,9.862a3,3,0,0,1,0,4.242Z"/>
             </svg>
         </div>
-        <form class="form_exchange" method="post" action="/exchange/request">
+        <form class="form_exchange">
             <label for="card_name_give">Nom de la carte que vous voulez échanger</label>
             <input type="text" name="card_name_give" id="card_name_give">
             <label for="card_name_want">Nom de la carte souhaitée</label>
@@ -119,7 +117,9 @@
           <div class="dashboard_content profile_container">
             <div class="profile_content">
 
+
             </div>
+            <div class="draw_button">Tirer vos cartes</div>
           </div>
           <div class="dashboard_content exchange_container">
             <div class="dashboard_content_title">
@@ -149,7 +149,9 @@
 
       </section>
     </main>
+
     <script src="api/getProfile.js"></script>
+    <script defer src="api/getDraw.js"></script>
     <script defer src="js/app.js"></script>
 
   </body>

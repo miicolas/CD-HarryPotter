@@ -20,6 +20,18 @@ function darkMode() {
   }
 }
 
+function logout() {
+  const button = document.querySelector(".logout");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    console.log("Click on logout button");
+
+    localStorage.removeItem("token");
+    window.location.href = "/signin.html";
+  });
+}
+
 function Carousel() {
   const swiper = new Swiper(".mySwiper", {
     loop: true,
@@ -104,82 +116,80 @@ function navTap() {
   });
 }
 
-// function formVerificationSignup() {
-//   const form = document.getElementById("signup_form");
-//   if (!form) return;
+function formVerificationSignup() {
+  const form = document.getElementById("signup_form");
+  if (!form) return;
 
-//   form.addEventListener("submit", function (e) {
-//     e.preventDefault();
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-//     let email = document.querySelector("#email_signup");
-//     let name = document.querySelector("#name");
-//     let password = document.querySelector("#password_signup");
-//     let confirmPassword = document.querySelector("#confirmPassword");
+    let email = document.querySelector("#email_signup");
+    let username_signup = document.querySelector("#username_signup");
+    let password = document.querySelector("#password_signup");
+    let confirmPassword = document.querySelector("#confirmPassword");
 
-//     const errorList = document.getElementById("error_list");
-//     errorList.innerHTML = "";
+    const errorList = document.getElementById("error_list");
+    errorList.innerHTML = "";
 
-//     if (name.value === "" || name.value.length < 6) {
-//       addErrorToList("Le nom doit contenir au moins 6 caractères");
-//     }
+    if (username_signup.value === "" || username_signup.value.length < 6) {
+      addErrorToList("Le nom doit contenir au moins 6 caractères");
+    }
 
-//     if (email.value === "" || email.value.indexOf("@") === -1) {
-//       addErrorToList("L'adresse email n'est pas valide");
-//     }
+    if (email.value === "" || email.value.indexOf("@") === -1) {
+      addErrorToList("L'adresse email n'est pas valide");
+    }
 
-//     const regexPassword =
-//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{8,}$/;
+    const regexPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{8,}$/;
 
-//     if (
-//       password.value.length < 8 ||
-//       regexPassword.test(password.value) === false
-//     ) {
-//       addErrorToList(
-//         "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
-//       );
-//     }
+    if (
+      password.value.length < 8 ||
+      regexPassword.test(password.value) === false
+    ) {
+      addErrorToList(
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
+      );
+    }
 
-//     if (
-//       password.value !== confirmPassword.value ||
-//       confirmPassword.value === ""
-//     ) {
-//       addErrorToList("Les mots de passe ne correspondent pas");
-//     }
+    if (
+      password.value !== confirmPassword.value ||
+      confirmPassword.value === ""
+    ) {
+      addErrorToList("Les mots de passe ne correspondent pas");
+    }
 
-//     if (errorList.children.length > 0) {
-//       const errorMessage = document.querySelector(".error_form");
-//       errorMessage.style.display = "block";
-//     } else {
-//       const successMessage = document.querySelector(".success_form");
-//       successMessage.style.display = "block";
-//       setTimeout(() => {
-//         form.submit();
-//       }, 2000);
-//     }console.log("Formulaire envoyé");
+    if (errorList.children.length > 0) {
+      const errorMessage = document.querySelectorAll(".error_form");
+      errorMessage.style.display = "block";
+    } else {
+      const successMessage = document.querySelectorAll(".success_form");
+      successMessage.style.display = "block";
+      setTimeout(() => {
+        form.submit();
+      }, 2000);
+    }
+    console.log("Formulaire envoyé");
+  });
 
-//     window.location.replace("/signup");
+  function addErrorToList(errorMessage) {
+    const errorList = document.getElementById("error_list");
+    const errorItem = document.createElement("li");
+    errorItem.textContent = errorMessage;
+    errorList.appendChild(errorItem);
+  }
+}
 
-//   });
-
-//   function addErrorToList(errorMessage) {
-//     const errorList = document.getElementById("error_list");
-//     const errorItem = document.createElement("li");
-//     errorItem.textContent = errorMessage;
-//     errorList.appendChild(errorItem);
-//   }
-// }
-
-function formVerificationLogin() {
+async function formVerificationLogin() {
   const formLogin = document.getElementById("login_form");
   if (!formLogin) return;
 
   formLogin.addEventListener("submit", function (e) {
     e.preventDefault();
-    let email = document.querySelector("#email_login");
+
+    const email = document.querySelector("#email_login");
+    const password = document.querySelector("#password_login");
 
     localStorage.setItem("email", email.value);
-
-    let password = document.querySelector("#password_login");
 
     const errorList = document.getElementById("error_list");
     errorList.innerHTML = "";
@@ -198,19 +208,76 @@ function formVerificationLogin() {
     } else {
       const successMessage = document.querySelector(".success_form");
       successMessage.style.display = "block";
-      setTimeout(() => {
-        formLogin.submit();
-      }, 2000);
-    }
 
-    console.log("Formulaire envoyé");
+      fetch("/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+            window.location.href = "/dashboard.html";
+          } else {
+            addErrorToList("Erreur lors de la connexion. Veuillez réessayer.");
+            document.querySelector(".error_form").style.display = "block";
+          }
+        })
+        .catch((error) => {
+          console.error("Erreur:", error);
+          addErrorToList("Erreur lors de la connexion. Veuillez réessayer.");
+          document.querySelector(".error_form").style.display = "block";
+        });
+    }
   });
-  function addErrorToList(errorMessage) {
-    const errorList = document.getElementById("error_list");
-    const errorItem = document.createElement("li");
-    errorItem.textContent = errorMessage;
-    errorList.appendChild(errorItem);
-  }
+}
+
+function addErrorToList(errorMessage) {
+  const errorList = document.getElementById("error_list");
+  const errorItem = document.createElement("li");
+  errorItem.textContent = errorMessage;
+  errorList.appendChild(errorItem);
+}
+
+function formExchange() {
+  const form = document.querySelector(".form_exchange");
+  const cardNameGive = document.getElementById("card_name_give");
+  const cardNameWant = document.getElementById("card_name_want");
+  const cardUser = document.getElementById("card_user");
+  if (!form) return;
+
+  console.log("form", form);
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    fetch("/exchange/request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        card_name_give: cardNameGive.value,
+        card_name_want: cardNameWant.value,
+        card_user: cardUser.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Erreur:", error);
+      });
+  });
 }
 
 function burgerMenu() {
@@ -327,13 +394,14 @@ function newRequestExchange() {
 
 document.addEventListener("DOMContentLoaded", function () {
   navTap();
+  logout();
   openTab();
+  formExchange();
   burgerMenu();
   darkMode();
   formVerificationLogin();
   newRequestExchange();
-
-  // formVerificationSignup();
+  formVerificationSignup();
   // Carousel();
   filterCards();
   searchCard();

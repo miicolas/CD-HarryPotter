@@ -1,5 +1,4 @@
-import {PrismaClient} from '@prisma/client';
-import e from 'express';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -10,15 +9,15 @@ export async function checkExistingUserData(req, res, next) {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: userId
-      }
+        id: userId,
+      },
     });
 
     if (username && username !== user[0].username) {
       const confirmUsername = await prisma.user.findUnique({
         where: {
-          username: username
-        }
+          username: username,
+        },
       });
       if (confirmUsername.length > 0 && username !== user[0].username) {
         return res.status(400).json({ error: "Username already exists" });
@@ -26,11 +25,10 @@ export async function checkExistingUserData(req, res, next) {
     }
 
     if (email && email !== user[0].email) {
-
       const confirmEmail = await prisma.user.findUnique({
         where: {
-          email: email
-        }
+          email: email,
+        },
       });
       if (confirmEmail.length > 0) {
         return res.status(400).json({ error: "Email already exists" });

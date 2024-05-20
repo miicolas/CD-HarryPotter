@@ -1,162 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Connexion</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/signin.css" />
-  </head>
-  <body>
-    <header class="logo_signin">
-      <nav>
-        <a href="index.html">
-          <div class="logo_container">
-            <img class="logo" src="img/logo.png" alt="logo Harry Potter" />
-          </div>
-        </a>
-      </nav>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Connexion</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/signin.css" />
+    </head>
+    <body>
+        <header class="logo_signin">
+            <nav>
+                <a href="index.html">
+                    <div class="logo_container">
+                        <img
+                            class="logo"
+                            src="img/logo.png"
+                            alt="logo Harry Potter"
+                        />
+                    </div>
+                </a>
+            </nav>
+        </header>
 
-    <section id="account">
-      <div class="account_container">
-        <div class="account_content background" id="background">
-          <div class="account_background">
-            <video class="account_background_content" autoplay muted loop>
-              <source src="img/hero.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
-        <div class="account_content">
-          <div class="account_tab">
-            <button class="account_tab_button active" data-tab="signin">
-              Connexion
-            </button>
-            <button class="account_tab_button" data-tab="signup">
-              Inscription
-            </button>
-          </div>
-          <div id="signin" class="tab_content active">
-            <h1 class="tab_content_title">Connecte-toi à ton compte</h1>
-            <p class="tab_content_subtitle">
-              Entre tes informations pour te connecter
-            </p>
-            <form
-              class="account_content_form"
-              action="/auth/login" method="post"
-              id="login_form"
-            >
-              <div class="account_content_form_content">
-                <label for="email_login">Email</label>
-                <input
-                  type="email"
-                  id="email_login"
-                  name="email_login"
-                  required
-                  placeholder="Adresse mail"
-                />
-              </div>
-              <div class="account_content_form_content">
-                <label for="password_login">Mot de passe</label>
-                <input
-                  type="password"
-                  id="password_login"
-                  name="password_login"
-                  required
-                  placeholder="Mot de passe"
-                />
-              </div>
-              <div class="error_form">
-                <ul id="error_list"></ul>
-              </div>
-              <div class="account_content_form_content">
-                <input type="submit" value="Connexion" />
-              </div>
-            </form>
-          </div>
-          <div id="signup" class="tab_content">
-            <h1 class="tab_content_title">Inscris toi</h1>
-            <p class="tab_content_subtitle">Complète tes informations</p>
-            <form
-              class="account_content_form"
-              action="/auth/signup"
-              method="post"
-              id="signup_form"
-            >
-              <div class="account_content_form_content">
-                <label for="email_signup">Email</label>
-                <input
-                  type="email"
-                  id="email_signup"
-                  name="email_signup"
-                  required
-                  placeholder="Adresse mail"
-                />
-              </div>
-              <div class="account_content_form_content">
-                <label for="username_signup">Nom d'utilisateur</label>
-                <input
-                  type="text"
-                  id="username_signup"
-                  name="username_signup"
-                  required
-                  placeholder="Nom d'utilisateur"
-                />
-              </div>
-              <div class="account_content_form_content">
-                <label for="password_signup">Mot de passe</label>
-                <input
-                  type="password"
-                  id="password_signup"
-                  name="password_signup"
-                  required
-                  placeholder="Mot de passe"
-                />
-              </div>
-              <div class="account_content_form_content">
-                <label for="confirmPassword">Mot de passe</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="password_signup_confirm"
-                  required
-                  placeholder="Mot de passe de confirmation"
-                />
-              </div>
-              <div class="account_content_form_content">
-                <label for="countries">Choisi ton pays</label>
-                <select id="countries" required>
-                  <option value="">--Votre pays--</option>
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>France</option>
-                  <option>Germany</option>
-                </select>
-              </div>
-              <div class="account_content_form_content">
-                <div class="input_terms">
-                  <input id="terms" type="checkbox" value="" required />
-                  <label for="terms"
-                    >J'accepte
-                    <a href="#" class=""
-                      >les termes et les conditions d'utilisations</a
-                    ></label
-                  >
+        <section id="account">
+            <div class="account_container">
+                <div class="account_content background" id="background">
+                    <div class="account_background">
+                        <video
+                            class="account_background_content"
+                            autoplay
+                            muted
+                            loop
+                        >
+                            <source src="img/hero.mp4" type="video/mp4" />
+                        </video>
+                    </div>
                 </div>
-                <div class="error_form">
-                  <ul id="error_list"></ul>
-                </div>
+                <div class="account_content">
+                    <div class="account_tab">
+                        <button
+                            class="account_tab_button active"
+                            data-tab="signin"
+                        >
+                            Connexion
+                        </button>
+                        <button class="account_tab_button" data-tab="signup">
+                            Inscription
+                        </button>
+                    </div>
+                    <div id="signin" class="tab_content active">
+                        <h1 class="tab_content_title">
+                            Connecte-toi à ton compte
+                        </h1>
+                        <p class="tab_content_subtitle">
+                            Entre tes informations pour te connecter
+                        </p>
+                        <form class="account_content_form" id="login_form">
+                            <div class="account_content_form_content">
+                                <label for="email_login">Email</label>
+                                <input
+                                    type="email"
+                                    id="email_login"
+                                    name="email_login"
+                                    placeholder="Adresse mail"
+                                />
+                            </div>
+                            <div class="account_content_form_content">
+                                <label for="password_login">Mot de passe</label>
+                                <input
+                                    type="password"
+                                    id="password_login"
+                                    name="password_login"
+                                    placeholder="Mot de passe"
+                                />
+                            </div>
+                            <div class="error_form">
+                                <ul id="error_list"></ul>
+                            </div>
+                            <div class="account_content_form_content">
+                                <input type="submit" value="Connexion" />
+                            </div>
+                        </form>
+                    </div>
+                    <div id="signup" class="tab_content">
+                        <h1 class="tab_content_title">Inscris toi</h1>
+                        <p class="tab_content_subtitle">
+                            Complète tes informations
+                        </p>
+                        <form
+                            class="account_content_form"
+                            action="/auth/signup"
+                            method="post"
+                            id="signup_form"
+                        >
+                            <div class="account_content_form_content">
+                                <label for="email_signup">Email</label>
+                                <input
+                                    type="email"
+                                    id="email_signup"
+                                    name="email_signup"
+                                    placeholder="Adresse mail"
+                                />
+                            </div>
+                            <div class="account_content_form_content">
+                                <label for="username_signup"
+                                    >Nom d'utilisateur</label
+                                >
+                                <input
+                                    type="text"
+                                    id="username_signup"
+                                    name="username_signup"
+                                    placeholder="Nom d'utilisateur"
+                                />
+                            </div>
+                            <div class="account_content_form_content">
+                                <label for="password_signup"
+                                    >Mot de passe</label
+                                >
+                                <input
+                                    type="password"
+                                    id="password_signup"
+                                    name="password_signup"
+                                    placeholder="Mot de passe"
+                                />
+                            </div>
+                            <div class="account_content_form_content">
+                                <label for="confirmPassword"
+                                    >Mot de passe</label
+                                >
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="password_signup_confirm"
+                                    placeholder="Mot de passe de confirmation"
+                                />
+                            </div>
+                            <div class="account_content_form_content">
+                                <label for="countries">Choisi ton pays</label>
+                                <select id="countries">
+                                    <option>--Votre pays--</option>
+                                    <option>United States</option>
+                                    <option>Canada</option>
+                                    <option>France</option>
+                                    <option>Germany</option>
+                                </select>
+                            </div>
+                            <div class="account_content_form_content">
+                                <div class="input_terms">
+                                    <input
+                                        id="terms"
+                                        type="checkbox"
+                                        value=""
+                                    />
+                                    <label for="terms"
+                                        >J'accepte
+                                        <a href="#" class=""
+                                            >les termes et les conditions
+                                            d'utilisations</a
+                                        ></label
+                                    >
+                                </div>
+                                <div class="error_form">
+                                    <ul id="error_list"></ul>
+                                </div>
 
-                <p class="success_form">Le formulaire est correct.</p>
-                <div class="account_content_form_content">
-                  <input type="submit" value="Inscription" />
+                                <p class="success_form">
+                                    Le formulaire est correct.
+                                </p>
+                                <div class="account_content_form_content">
+                                    <input type="submit" value="Inscription" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-    <script defer src="js/app.js"></script>
-  </body>
+            </div>
+        </section>
+        <script defer src="js/app.js"></script>
+    </body>
 </html>

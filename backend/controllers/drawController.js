@@ -54,8 +54,9 @@ export async function getDrawCards(req, res) {
       },
     });
 
-    // Rediriger vers la page du profil
-    res.redirect("/dashboard");
+    console.log(drawnCards, "drawnCards");
+
+    res.status(200).json({ drawnCards });
   } catch (error) {
     console.error(error);
     res.status(500).send("Erreur serveur");

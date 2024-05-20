@@ -53,6 +53,7 @@ export async function requestExchange(req, res) {
     // console.log(checkUserAsked, "checkUserAsked");
 
     if (!checkUserAsked) {
+      console.error(error);
       return res
         .status(400)
         .json({ error: "L'utilisateur demandé n'existe pas" });
@@ -70,10 +71,13 @@ export async function requestExchange(req, res) {
     console.log(checkCardAsked, "checkCardAsked");
 
     if (!checkCardAsked) {
+      console.error(error);
       return res
         .status(400)
         .json({ error: "L'utilisateur demandé ne possède pas cette carte" });
     }
+
+    console.log("create exchange");
 
     await prisma.exchange.create({
       data: {
@@ -86,7 +90,7 @@ export async function requestExchange(req, res) {
       },
     });
 
-    return res.status(200).redirect("/dashboard");
+    return res.status(200).json({ message: "Demande d'échange envoyée" });
   } catch (error) {
     console.error(error);
     return res
@@ -113,7 +117,7 @@ export async function getExchangeRequest(req, res) {
       },
     });
 
-    console.log(exchangeRequest, "exchangeRequest");
+    // console.log(exchangeRequest, "exchangeRequest");
 
     if (exchangeRequest.length === 0) {
       return res.status(200).json({ message: "Aucune demande d'échange" });
@@ -126,58 +130,21 @@ export async function getExchangeRequest(req, res) {
       .json({ error: "Erreur dans la récupération des informations" });
   }
 }
-
 export async function acceptExchange(req, res) {
   try {
-    const requestId = req.params.id;
+    const requestId = parseInt(req.params.id);
 
     console.log(requestId, "requestId");
 
     const exchangeInfo = await prisma.exchange.findFirst({
       where: {
-        id_exchange: parseInt(requestId),
+        id_exchange: requestId,
       },
     });
 
-    console.log(exchangeInfo, "exchangeInfo");
-
-    const fistExchange = await prisma.userCard.create({
-      data: {
-        id_user: exchangeInfo.id_user,
-        id_card: exchangeInfo.id_card_want,
-      },
-    });
-
-    const id_user_cardFirstExchange = await prisma.userCard.findFirst({
+    const id_user_card_give = await prisma.userCard.findFirst({
       where: {
         id_user: exchangeInfo.id_user,
-        id_card: exchangeInfo.id_card_want,
-      },
-      select: {
-        id_user_card: true,
-      },
-    });
-
-    console.log(id_user_cardFirstExchange, "fistExchange");
-
-    const deleteCardFirstExchange = await prisma.userCard.delete({
-      where: {
-        id_user_card: id_user_cardFirstExchange.id_user_card,
-      },
-    });
-
-    console.log(deleteCardFirstExchange, "deleteCardFirstExchange");
-
-    const secondExchange = await prisma.userCard.create({
-      data: {
-        id_user: exchangeInfo.id_user_asked,
-        id_card: exchangeInfo.id_card,
-      },
-    });
-
-    const id_user_cardSecondExchange = await prisma.userCard.findFirst({
-      where: {
-        id_user: exchangeInfo.id_user_asked,
         id_card: exchangeInfo.id_card,
       },
       select: {
@@ -185,33 +152,48 @@ export async function acceptExchange(req, res) {
       },
     });
 
-    console.log(id_user_cardSecondExchange, "id_user_cardSecondExchange");
-
-    console.log(secondExchange, "secondExchange");
-
-    const deleteCardSecondExchange = await prisma.userCard.delete({
+    await prisma.userCard.update({
       where: {
-        id_user_card: id_user_cardSecondExchange.id_user_card,
+        id_user_card: id_user_card_give.id_user_card,
+      },
+      data: {
+        id_card: exchangeInfo.id_card_want,
       },
     });
 
-    console.log(deleteCardSecondExchange, "deleteCardSecondExchange");
-
-    const updateExchange = await prisma.exchange.update({
+    const id_user_card_want = await prisma.userCard.findFirst({
       where: {
-        id_exchange: parseInt(requestId),
+        id_user: exchangeInfo.id_user_asked,
+        id_card: exchangeInfo.id_card_want,
       },
+      select: {
+        id_user_card: true,
+      },
+    });
+
+    await prisma.userCard.update({
+      where: {
+        id_user_card: id_user_card_want.id_user_card,
+      },
+      data: {
+        id_card: exchangeInfo.id_card,
+      },
+    });
+
+    await prisma.exchange.update({
+      where: {
+        id_exchange: requestId,
+      },
+
       data: {
         status: "accepted",
       },
     });
 
-    console.log(updateExchange, "updateExchange");
-
-    res.redirect("/dashboard.html");
+    res.status(200).json({ message: "Echange accepté" });
   } catch (error) {
-    console.error(error);
-    return res
+    console.error("Error processing exchange:", error);
+    res
       .status(500)
       .json({ error: "Erreur dans la récupération des informations" });
   }
@@ -221,17 +203,7 @@ export async function refuseExchange(req, res) {
   try {
     const requestId = req.params.id;
 
-    console.log(requestId, "requestId");
-
-    const exchangeInfo = await prisma.exchange.findFirst({
-      where: {
-        id_exchange: parseInt(requestId),
-      },
-    });
-
-    console.log(exchangeInfo, "exchangeInfo");
-
-    const updateExchange = await prisma.exchange.update({
+    await prisma.exchange.update({
       where: {
         id_exchange: parseInt(requestId),
       },
@@ -240,9 +212,7 @@ export async function refuseExchange(req, res) {
       },
     });
 
-    console.log(updateExchange, "updateExchange");
-
-    res.redirect("/dashboard.html");
+    res.status(200).json({ message: "Echange refusé" });
   } catch (error) {
     console.error(error);
     return res

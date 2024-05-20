@@ -8,30 +8,14 @@ export async function login(req, res) {
   try {
     const user = req.user; // Récupère l'utilisateur authentifié par le middleware authenticateToken
     const token = jwt.sign({ user }, "secretKey"); // Crée un token avec l'utilisateur authentifié
-    res
-      .cookie("AuthToken", token, {
-        // Crée un cookie avec le token
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        expires: 0,
-      })
-      .redirect("/dashboard"); // Redirige vers la page du profil
+
+    res.status(200).json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error logging in" });
   }
 }
 
-export async function logout(req, res) {
-  try {
-    // Supprime le cookie d'authentification
-    res.clearCookie("AuthToken").redirect("/"); // Supprime le cookie d'authentification et redirige vers la page d'accueil
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erreur dans la déconnexion" });
-  }
-}
 export async function signup(req, res) {
   try {
     const { username_signup, password_signup, email_signup } = req.body;
