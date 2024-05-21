@@ -11,7 +11,7 @@ drawButton.addEventListener("click", () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        window.location.reload();
+        window.location.href = "/dashboard.html";
       });
   } catch (error) {
     console.log(error);

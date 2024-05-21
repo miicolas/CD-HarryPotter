@@ -4,11 +4,11 @@ const prisma = new PrismaClient();
 export async function requestExchange(req, res) {
   try {
     const userId = req.user.id; // Récupère l'id de l'utilisateur à partir du token
-    console.log(userId, "userId");
+    // console.log(userId, "userId");
     const requestInfo = req.body;
 
-    console.log(requestInfo, "requestInfo");
-    console.log(userId, "userId");
+    // console.log(requestInfo, "requestInfo");
+    // console.log(userId, "userId");
 
     const checkCardGive = await prisma.userCard.findFirst({
       where: {
@@ -19,7 +19,7 @@ export async function requestExchange(req, res) {
         id_user_card: true,
       },
     });
-    console.log(checkCardGive, "checkCardGive");
+    // console.log(checkCardGive, "checkCardGive");
 
     const checkCardWantExist = await prisma.userCard.findFirst({
       where: {
@@ -68,7 +68,8 @@ export async function requestExchange(req, res) {
         id_user_card: true,
       },
     });
-    console.log(checkCardAsked, "checkCardAsked");
+
+    // console.log(checkCardAsked, "checkCardAsked");
 
     if (!checkCardAsked) {
       console.error(error);
@@ -77,7 +78,7 @@ export async function requestExchange(req, res) {
         .json({ error: "L'utilisateur demandé ne possède pas cette carte" });
     }
 
-    console.log("create exchange");
+    // console.log("create exchange");
 
     await prisma.exchange.create({
       data: {
@@ -90,7 +91,7 @@ export async function requestExchange(req, res) {
       },
     });
 
-    return res.status(200).json({ message: "Demande d'échange envoyée" });
+    res.status(200).json({ message: "Demande d'échange envoyée" });
   } catch (error) {
     console.error(error);
     return res
@@ -134,7 +135,7 @@ export async function acceptExchange(req, res) {
   try {
     const requestId = parseInt(req.params.id);
 
-    console.log(requestId, "requestId");
+    // console.log(requestId, "requestId");
 
     const exchangeInfo = await prisma.exchange.findFirst({
       where: {
@@ -192,7 +193,7 @@ export async function acceptExchange(req, res) {
 
     res.status(200).json({ message: "Echange accepté" });
   } catch (error) {
-    console.error("Error processing exchange:", error);
+    console.error("Erreur dans le processus d'échange", error);
     res
       .status(500)
       .json({ error: "Erreur dans la récupération des informations" });

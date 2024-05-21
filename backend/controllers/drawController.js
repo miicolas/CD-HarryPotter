@@ -32,9 +32,11 @@ export async function getDrawCards(req, res) {
     // Ajouter les cartes tirées à la table userCard et vérifier si elles existent déjà
     for (const card of drawnCards) {
       const cardExists = userCard.find(
-        (userCard) => userCard.id_card === card.id_card,
+        // Vérifie si la carte existe déjà dans la table userCard
+        (userCard) => userCard.id_card === card.id_card, // Si la carte existe déjà, on ne l'ajoute pas
       );
       if (!cardExists) {
+        // Si la carte n'existe pas, on l'ajoute
         await prisma.userCard.create({
           data: {
             id_user: userId,
@@ -44,7 +46,7 @@ export async function getDrawCards(req, res) {
       }
     }
 
-    // Mettre à jour le timestamp du dernier tirage
+    // Mettre à jour la date du dernier tirage
     await prisma.user.update({
       where: {
         id: userId,

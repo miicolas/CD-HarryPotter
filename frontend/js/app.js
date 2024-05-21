@@ -25,8 +25,7 @@ function logout() {
   if (!button) return;
 
   button.addEventListener("click", () => {
-    console.log("Click on logout button");
-
+    // console.log("Click on logout button");
     localStorage.removeItem("token");
     window.location.href = "/signin.html";
   });
@@ -56,21 +55,21 @@ function Carousel() {
 function searchCard() {
   const searchInput = document.getElementById("search");
   if (!searchInput) return;
-  console.log(searchInput);
+  // console.log(searchInput);
 
   searchInput.addEventListener("input", function () {
     const galleryItems = document.querySelectorAll(".card");
-    console.log(galleryItems);
+    // console.log(galleryItems);
 
     const searchValue = searchInput.value.trim().toLowerCase(); // trim() supprime les espaces avant et après la chaîne de caractères
-    console.log("Valeur ", searchValue);
-    console.log("Items ", galleryItems);
+    // console.log("Valeur ", searchValue);
+    // console.log("Items ", galleryItems);
 
     galleryItems.forEach(function (item) {
       // Vérifiez que l'élément possède bien un attribut data-id
 
       const dataId = item.getAttribute("data-id");
-      console.log("Data id: ", dataId);
+      // console.log("Data id: ", dataId);
 
       // Vérifiez si l'attribut data-id est null ou non
       if (dataId !== null) {
@@ -95,7 +94,7 @@ function navTap() {
   const btnClose = document.getElementById("btn_close");
   const navContent = document.getElementById("nav_content");
   if (!navContent) return;
-  console.log(btnOpen);
+  // console.log(btnOpen);
   btnOpen.addEventListener("click", function () {
     btnOpen.style.display = "none";
     navContent.style.display = "block";
@@ -116,68 +115,67 @@ function navTap() {
   });
 }
 
-function formVerificationSignup() {
-  const form = document.getElementById("signup_form");
-  if (!form) return;
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    let email = document.querySelector("#email_signup");
-    let username_signup = document.querySelector("#username_signup");
-    let password = document.querySelector("#password_signup");
-    let confirmPassword = document.querySelector("#confirmPassword");
-
-    const errorList = document.getElementById("error_list");
-    errorList.innerHTML = "";
-
-    if (username_signup.value === "" || username_signup.value.length < 6) {
-      addErrorToList("Le nom doit contenir au moins 6 caractères");
-    }
-
-    if (email.value === "" || email.value.indexOf("@") === -1) {
-      addErrorToList("L'adresse email n'est pas valide");
-    }
-
-    const regexPassword =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{8,}$/;
-
-    if (
-      password.value.length < 8 ||
-      regexPassword.test(password.value) === false
-    ) {
-      addErrorToList(
-        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
-      );
-    }
-
-    if (
-      password.value !== confirmPassword.value ||
-      confirmPassword.value === ""
-    ) {
-      addErrorToList("Les mots de passe ne correspondent pas");
-    }
-
-    if (errorList.children.length > 0) {
-      const errorMessage = document.querySelectorAll(".error_form");
-      errorMessage.style.display = "block";
-    } else {
-      const successMessage = document.querySelectorAll(".success_form");
-      successMessage.style.display = "block";
-      setTimeout(() => {
-        form.submit();
-      }, 2000);
-    }
-    console.log("Formulaire envoyé");
-  });
-
-  function addErrorToList(errorMessage) {
-    const errorList = document.getElementById("error_list");
-    const errorItem = document.createElement("li");
-    errorItem.textContent = errorMessage;
-    errorList.appendChild(errorItem);
-  }
+function addErrorToList(errorMessage) {
+  const errorList = document.getElementById("error_list");
+  const errorItem = document.createElement("li");
+  errorItem.textContent = errorMessage;
+  errorList.appendChild(errorItem);
 }
+
+// function formVerificationSignup() {
+//   const form = document.getElementById("signup_form");
+//   if (!form) return;
+
+//   form.addEventListener("submit", function (e) {
+//     e.preventDefault();
+
+//     let email = document.querySelector("#email_signup");
+//     let username_signup = document.querySelector("#username_signup");
+//     let password = document.querySelector("#password_signup");
+//     let confirmPassword = document.querySelector("#confirmPassword");
+
+//     const errorList = document.getElementById("error_list");
+//     errorList.innerHTML = "";
+
+//     if (username_signup.value === "" || username_signup.value.length < 6) {
+//       addErrorToList("Le nom doit contenir au moins 6 caractères");
+//     }
+
+//     if (email.value === "" || email.value.indexOf("@") === -1) {
+//       addErrorToList("L'adresse email n'est pas valide");
+//     }
+
+//     const regexPassword =
+//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{8,}$/;
+
+//     if (
+//       password.value.length < 8 ||
+//       regexPassword.test(password.value) === false
+//     ) {
+//       addErrorToList(
+//         "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
+//       );
+//     }
+
+//     if (
+//       password.value !== confirmPassword.value ||
+//       confirmPassword.value === ""
+//     ) {
+//       addErrorToList("Les mots de passe ne correspondent pas");
+//     }
+
+//     if (errorList.children.length > 0) {
+//       const errorMessage = document.querySelectorAll(".error_form");
+//       errorMessage.style.display = "block";
+//     } else {
+//       const successMessage = document.querySelectorAll(".success_form");
+//       successMessage.style.display = "block";
+
+//       form.submit();
+//     }
+//     console.log("Formulaire envoyé");
+//   });
+// }
 
 async function formVerificationLogin() {
   const formLogin = document.getElementById("login_form");
@@ -270,9 +268,15 @@ function formExchange() {
         card_user: cardUser.value,
       }),
     })
-      .then((response) => response.json())
+      // si la reponse n'est pas une reponse status 200, on renvoie une erreur
+      .then((response) => {
+        if (!response.status === 200) {
+          throw new Error("Erreur lors de la requête");
+        }
+      })
       .then((data) => {
-        console.log("Success:", data);
+        // console.log("Success:", data);
+        window.location.href = "/dashboard.html";
       })
       .catch((error) => {
         console.error("Erreur:", error);
@@ -364,12 +368,12 @@ function filterCards() {
 
 function cardInfo() {
   const card = document.querySelectorAll(".card_button_readmore");
-
   if (!card) return;
+
   card.forEach((card) => {
     card.addEventListener("click", function () {
       const cardId = card.closest(".card").getAttribute("data-id");
-      console.log(cardId, "cardId appjs");
+      // console.log(cardId, "cardId appjs");
       // renvoie sur la page de la carte
       window.location.href = `/cardinfo.html?card=${cardId}`;
     });
@@ -401,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
   darkMode();
   formVerificationLogin();
   newRequestExchange();
-  formVerificationSignup();
+  // formVerificationSignup();
   // Carousel();
   filterCards();
   searchCard();
